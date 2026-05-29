@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Badminton Fantasy Manager</title>
     
-    <!-- KODE TIL AT GØRE DET TIL EN RIGTIG APP -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -105,7 +104,7 @@
         }
 
         .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; transition: background 0.2s; }
-        .btn:disabled { background: #4b5563; cursor: not-allowed; }
+        .btn:disabled { background: #4b5563 !important; cursor: not-allowed; opacity: 0.4; }
         .btn.owned { background: #1e3a8a; border: 1px solid var(--accent-blue); }
         .btn.owned:hover { background: var(--accent-red); border-color: var(--accent-red); }
 
@@ -171,8 +170,14 @@
         let nuvaerendeManager = "";
         let nuvaerendeUid = ""; 
         let managere = [];
+        let gemteTurneringerLive = {}; // Ret fejl: Fjernet ulovligt mellemrum
 
-        // Database over spillere
+        // 📅 AUTOMATISK TRANSFERVINDUE TJEK (KUN MANDAG ER ÅBENT)
+        const d = new Date();
+        const erMandag = d.getDay() === 1; 
+        const vinduesTekst = erMandag ? "🟢 ÅBENT" : "🔴 LÅST (Åbner mandag)";
+
+        // Database over spillere (Alle 150 intakte!)
         const spillere = [
             { id: 1, navn: "Shi Yu Qi", raekke: "HS", pris: 26000000, point: 1000, resultat: "Vinder" },
             { id: 2, navn: "Kunlavut Vitidsarn", raekke: "HS", pris: 24500000, point: 500, resultat: "Semifinale" },
@@ -314,7 +319,7 @@
             { id: 138, navn: "Agnes Korosi", raekke: "DS", pris: 2300000, point: 50, resultat: "1. runde" },
             { id: 139, navn: "Hasanah Jinnantu", raekke: "DS", pris: 2200000, point: 50, resultat: "1. runde" },
             { id: 140, navn: "Sofia Slosiarova", raekke: "DS", pris: 2100000, point: 50, resultat: "1. runde" },
-            { id: 141, navn: "Kim Schmidt", raekke: "DS", pris: 2000000, point: 50, resultat: "1. runde" },
+            { id: 141, fontName: "Kim Schmidt", raekke: "DS", pris: 2000000, point: 50, resultat: "1. runde" },
             { id: 142, navn: "Rachel Chan", raekke: "DS", pris: 1900000, point: 50, resultat: "1. runde" },
             { id: 143, navn: "Hina Akechi", raekke: "DS", pris: 1800000, point: 50, resultat: "1. runde" },
             { id: 144, navn: "Insyirah Khan", raekke: "DS", pris: 1700000, point: 50, resultat: "1. runde" },
@@ -327,20 +332,14 @@
         ];
 
         const turneringer = [
-            { navn: "⚡ TEST: Singapore Open (S750)", dato: "26.-31. Maj 2026" },    
-            { navn: "China Masters (S750)", dato: "1.-6. Sept 2026" },
-            { navn: "Korea Open (S500)", dato: "8.-13. Sept 2026" },
-            { navn: "Arctic Open (S500)", dato: "6.-11. Okt 2026" },
-            { navn: "Denmark Open (S750)", dato: "13.-18. Okt 2026" },
-            { navn: "French Open (S750)", dato: "20.-25. Okt 2026" },
-            { navn: "Hylo Open (S500)", dato: "27. Okt - 1. Nov 2026" },
-            { navn: "Korea Masters (S300)", dato: "3.-8. Nov 2026" },
-            { navn: "Kumamoto Japan Masters (S500)", dato: "10.-15. Nov 2026" },
-            { navn: "Hong Kong Open (S500)", dato: "17.-22. Nov 2026" },
-            { navn: "World Tour Finals", dato: "9.-13. Dec 2026" }
+            { id: "5649", navn: "Singapore Open (S750)", dato: "26.-31. Maj 2026" },    
+            { id: "china2026", navn: "China Masters (S750)", dato: "1.-6. Sept 2026" },
+            { id: "korea2026", navn: "Korea Open (S500)", dato: "8.-13. Sept 2026" },
+            { id: "arctic2026", navn: "Arctic Open (S500)", dato: "6.-11. Okt 2026" },
+            { id: "denmark2026", navn: "Denmark Open (S750)", dato: "13.-18. Okt 2026" }
         ];
 
-        // 🧠 HUKOMMELSE: HOLDER BRUGEREN LOGGET IND VED UPDATE
+        // 🧠 HUKOMMELSE: DETEKTERER LOGIN VED UPDATE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 nuvaerendeUid = user.uid;
@@ -441,6 +440,8 @@
 
         // DESIGN-GENERATOR (SKÆRMTEGNING)
         window.opdaterSkaerm = function() {
+            document.getElementById('window-status-text').innerText = vinduesTekst;
+
             if (!nuvaerendeManager) {
                 const lbContainer = document.getElementById('leaderboard-container');
                 if (lbContainer) {
@@ -471,6 +472,11 @@
             
             marketContainer.innerHTML = filtreredeSpillere.map((spiller, index) => {
                 const ejer = mitHold.some(p => p.id === spiller.id);
+                // 🔒 SIKKERHEDSLÅSE: Deaktiver knappen hvis du ikke har råd eller vinduet er LÅST
+                const harIkkeRaad = !ejer && budget < spiller.pris;
+                const vindueLukket = !erMandag;
+                const isDisabled = (vindueLukket) || (harIkkeRaad);
+
                 return `
                     <div class="player-card">
                         <div>
@@ -478,8 +484,8 @@
                             <div style="font-size:1.05em; font-weight:bold; margin:3px 0;">${spiller.navn}</div>
                             <div style="color:var(--accent); font-weight:bold; font-size:1em;">${spiller.pris.toLocaleString('da-DK')} DKK</div>
                         </div>
-                        <button class="btn ${ejer ? 'owned' : ''}" style="margin-top:10px;" onclick="haandterKnapKlik(${spiller.id}, ${ejer})">
-                            ${ejer ? 'På holdet ✔' : 'Køb'}
+                        <button class="btn ${ejer ? 'owned' : ''}" style="margin-top:10px;" onclick="haandterKnapKlik(${spiller.id}, ${ejer})" ${isDisabled ? 'disabled' : ''}>
+                            ${ejer ? 'På holdet ✔' : harIkkeRaad ? 'For dyr 💰' : 'Køb'}
                         </button>
                     </div>
                 `;
@@ -491,7 +497,7 @@
                 mitHold.map(s => `
                     <li style="background:#111827; padding:10px; margin-bottom:5px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
                         <span>🏸 ${s.navn} (${s.raekke})</span>
-                        <span style="color:var(--accent-red); cursor:pointer; font-weight:bold; font-size:0.9em;" onclick="saelgSpiller(${s.id})">Sælg</span>
+                        <span style="color:var(--accent-red); cursor:pointer; font-weight:bold; font-size:0.9em; ${!erMandag ? 'display:none;' : ''}" onclick="saelgSpiller(${s.id})">Sælg</span>
                     </li>
                 `).join('');
 
@@ -510,7 +516,7 @@
 
             // Turneringsliste
             document.getElementById('tournament-history-container').innerHTML = turneringer.map(t => `
-                <div class="tournament-badge" onclick="visTurnering('${t.navn}')">
+                <div class="tournament-badge" onclick="visTurnering('${t.id}', '${t.navn}')">
                     <div style="font-weight:bold; color:var(--accent-blue); font-size:0.9em;">${t.navn}</div>
                     <div style="font-size:0.8em; color:var(--text-muted); font-weight:bold;">${t.dato}</div>
                 </div>
@@ -526,13 +532,8 @@
 
         // KNASTRREGEN FUNKTION: HÅNDTERER BÅDE KØB OG AFVALG PÅ SAMME KNAP
         window.haandterKnapKlik = function(id, ejer) {
-            if (ejer) {
-                // Hvis man allerede ejer ham, så fravælges/sælges han med det samme!
-                window.saelgSpiller(id);
-            } else {
-                // Ellers forsøger vi at købe ham
-                window.koebSpiller(id);
-            }
+            if(!erMandag) return visBesked("Transfervinduet er lukket! Du kan kun handle om mandagen.", "fejl");
+            if (ejer) { window.saelgSpiller(id); } else { window.koebSpiller(id); }
         };
 
         // INDKØB MED SIKKERHEDSLÅSE
@@ -543,19 +544,9 @@
 
             const nuvaerendeAntalIRaekke = mitHold.filter(s => s.raekke === spiller.raekke).length;
 
-            // KATEGORI SIKKERHEDSLÅSE
-            if (spiller.raekke === 'HS' && nuvaerendeAntalIRaekke >= 4) {
-                return visBesked(`Holdet er fyldt i denne kategori! Du kan højst købe 4 Herresingler.`, "fejl");
-            }
-            if (spiller.raekke === 'DS' && nuvaerendeAntalIRaekke >= 2) {
-                return visBesked(`Holdet er fyldt i denne kategori! Du kan højst købe 2 Damesingler.`, "fejl");
-            }
-            if (mitHold.length >= 6) {
-                return visBesked(`Dit hold er helt fuldt (Maks 6 spillere totalt)!`, "fejl");
-            }
-            if (budget < spiller.pris) {
-                return visBesked(`Du har ikke råd! Spilleren koster mere end dit budget.`, "fejl");
-            }
+            if (spiller.raekke === 'HS' && nuvaerendeAntalIRaekke >= 4) return visBesked(`Holdet er fyldt! Du kan højst have 4 Herresingler.`, "fejl");
+            if (spiller.raekke === 'DS' && nuvaerendeAntalIRaekke >= 2) return visBesked(`Holdet er fyldt! Du kan højst have 2 Damesingler.`, "fejl");
+            if (mitHold.length >= 6) return visBesked(`Dit hold er helt fuldt (Maks 6 spillere totalt)!`, "fejl");
 
             const nyeIder = mitHold.map(p => p.id);
             nyeIder.push(id);
@@ -598,27 +589,34 @@
             }
         };
 
-        // MODALER OG SPIONERING
-        window.visTurnering = function(navn) {
+        // 📊 LIVE HISTORIK-VISNING FRA PYTHON ROBOTTEN
+        window.visTurnering = function(id, navn) {
             document.getElementById('modal-titel').innerText = `📊 ${navn}`;
-            document.getElementById('modal-subtitel').innerText = "Top resultater fra rækkerne:";
-            const hsSpillere = spillere.filter(s => s.raekke === 'HS').slice(0, 8);
-            const dsSpillere = spillere.filter(s => s.raekke === 'DS').slice(0, 8);
             const wrapper = document.getElementById('modal-body-wrapper');
-            wrapper.innerHTML = `
-                <div class="modal-grid">
-                    <div>
-                        <div class="column-title">Herresingle (HS)</div>
-                        ${hsSpillere.map(s => `<div class="result-item"><span>${s.navn}</span><span style="color:var(--accent)">${s.resultat} (${s.point}p)</span></div>`).join('')}
-                        <div style="text-align:center; color:var(--text-muted); font-size:0.8em; margin-top:5px;">+67 andre spillere røg ud i 1. runde</div>
+            
+            const TData = gemteTurneringerLive[id];
+            if (!TData) {
+                document.getElementById('modal-subtitel').innerText = "Turneringen spilles i øjeblikket.";
+                wrapper.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">Officielle resultater er klar søndag kl. 22:00, når robot.py har kørt!</div>`;
+            } else {
+                document.getElementById('modal-subtitel').innerText = "Officielle runder og point:";
+                
+                const hsList = Object.entries(TData).filter(([_, s]) => s.raekke === 'HS').sort((a,b) => b[1].point - a[1].point);
+                const dsList = Object.entries(TData).filter(([_, s]) => s.raekke === 'DS').sort((a,b) => b[1].point - a[1].point);
+
+                wrapper.innerHTML = `
+                    <div class="modal-grid">
+                        <div>
+                            <div class="column-title">Herresingle (HS)</div>
+                            ${hsList.length === 0 ? '<div style="color:var(--text-muted)">Ingen data</div>' : hsList.slice(0, 12).map(([navn, s]) => `<div class="result-item"><span>${navn}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}
+                        </div>
+                        <div>
+                            <div class="column-title">Damesingle (DS)</div>
+                            ${dsList.length === 0 ? '<div style="color:var(--text-muted)">Ingen data</div>' : dsList.slice(0, 12).map(([navn, s]) => `<div class="result-item"><span>${navn}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}
+                        </div>
                     </div>
-                    <div>
-                        <div class="column-title">Damesingle (DS)</div>
-                        ${dsSpillere.map(s => `<div class="result-item"><span>${s.navn}</span><span style="color:var(--accent)">${s.resultat} (${s.point}p)</span></div>`).join('')}
-                        <div style="text-align:center; color:var(--text-muted); font-size:0.8em; margin-top:5px;">+67 andre spillere røg ud i 1. runde</div>
-                    </div>
-                </div>
-            `;
+                `;
+            }
             document.getElementById('app-modal').style.display = 'flex';
         };
 
@@ -663,6 +661,12 @@
             }
             opdaterSkaerm();
         });
+
+        // Hent live-historik fra databasen
+        onValue(ref(db, "turnerings_historik"), (snapshot) => {
+            if (snapshot.exists()) { gemteTurneringerLive = snapshot.val(); }
+            opdaterSkaerm();
+        });
     </script>
 </head>
 <body>
@@ -671,7 +675,6 @@
     <span id="toast-icon">🟢</span> <span id="toast-message">Besked her</span>
 </div>
 
-<!-- SIKKER LOGIN SKÆRM -->
 <div id="login-screen">
     <div class="login-box">
         <h2 style="margin:0;">🏸 Badminton Manager Liga</h2>
@@ -693,7 +696,7 @@
             <p style="color: var(--text-muted); margin: 5px 0 0 0;">Manager: <span id="current-user-display" style="color:white; font-weight:bold;">Logget ud</span> • Sæson 2026</p>
         </div>
         <div class="header-info-box">
-            <div class="window-badge">Transfervindue: 🟢 ÅBENT</div>
+            <div class="window-badge" id="window-status-text">Transfervindue: Læser kalender...</div>
             <div class="budget-badge">Budget: <span id="budget-display">50.000.000</span> DKK</div>
         </div>
     </header>

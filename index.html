@@ -86,7 +86,9 @@
             box-sizing: border-box;
         }
 
+        .header-info-box { display: flex; gap: 15px; align-items: center; }
         .budget-badge { background: #065f46; color: #34d399; padding: 10px 20px; border-radius: 30px; font-weight: bold; white-space: nowrap; }
+        .window-badge { background: #1e3a8a; color: #60a5fa; padding: 10px 20px; border-radius: 30px; font-weight: bold; white-space: nowrap; }
         .section { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-sizing: border-box; width: 100%; }
 
         .tabs-container { display: flex; gap: 10px; margin: 15px 0; width: 100%; }
@@ -102,8 +104,10 @@
             background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;
         }
 
-        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; }
+        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; transition: background 0.2s; }
         .btn:disabled { background: #4b5563; cursor: not-allowed; }
+        .btn.owned { background: #1e3a8a; border: 1px solid var(--accent-blue); }
+        .btn.owned:hover { background: var(--accent-red); border-color: var(--accent-red); }
 
         .leaderboard-table { width: 100%; border-collapse: collapse; }
         .leaderboard-table th, .leaderboard-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #374151; }
@@ -122,18 +126,17 @@
         .column-title { border-bottom: 2px solid #374151; padding-bottom: 5px; margin-bottom: 10px; color: var(--accent-blue); font-weight: bold; }
         .result-item { display: flex; justify-content: space-between; padding: 8px; background: #111827; margin-bottom: 5px; border-radius: 6px; font-size: 0.9em; }
 
-        /* 📱 SKRÆDDERSYET MOBIL-OPTIMERING (INGEN SIDELÆNS SCROLL) */
+        /* 📱 MOBIL-OPTIMERING */
         @media (max-width: 768px) { 
             body { padding: 8px; }
             .dashboard { grid-template-columns: 1fr; gap: 12px; width: 100%; overflow-x: hidden; }
-            header { flex-direction: column; gap: 15px; text-align: center; grid-column: auto; width: 100%; }
+            header { flex-direction: column; gap: 12px; text-align: center; grid-column: auto; width: 100%; padding: 15px; }
+            .header-info-box { flex-direction: column; gap: 8px; width: 100%; }
+            .budget-badge, .window-badge { width: 100%; text-align: center; padding: 8px; }
             .market-grid { grid-template-columns: 1fr 1fr; gap: 10px; max-height: 450px; }
             .player-card { padding: 10px; }
-            .player-card style { font-size: 0.9em; }
             .modal-grid { grid-template-columns: 1fr; gap: 15px; }
             .section { padding: 15px 10px; }
-            .tournament-history { flex-direction: column; }
-            .tournament-badge { padding: 12px; }
             #tournament-section-box { grid-column: auto !important; }
         }
 
@@ -279,7 +282,7 @@
             { id: 106, navn: "Wen Chi Hsu", raekke: "DS", pris: 7300000, point: 50, resultat: "1. runde" },
             { id: 107, navn: "Lo Sin Yan Happy", raekke: "DS", pris: 7100000, point: 50, resultat: "1. runde" },
             { id: 108, navn: "Malvika Bansod", raekke: "DS", pris: 6900000, point: 50, resultat: "1. runde" },
-            { id: 109, navn: "Asuka Takahashi", raSystem: "DS", pris: 6700000, point: 50, resultat: "1. runde" },
+            { id: 109, navn: "Asuka Takahashi", raekke: "DS", pris: 6700000, point: 50, resultat: "1. runde" },
             { id: 110, navn: "Thet Htar Thuzar", raekke: "DS", pris: 6500000, point: 50, resultat: "1. runde" },
             { id: 111, navn: "Aakarshi Kashyap", raekke: "DS", pris: 6300000, point: 50, resultat: "1. runde" },
             { id: 112, navn: "Lauren Lam", raekke: "DS", pris: 6100000, point: 50, resultat: "1. runde" },
@@ -337,7 +340,7 @@
             { navn: "World Tour Finals", dato: "9.-13. Dec 2026" }
         ];
 
-        // 🧠 HUKOMMELSE: LOG DETEKTOR (HOLDER DIG INDLOGGET VED OPDATERING)
+        // 🧠 HUKOMMELSE: HOLDER BRUGEREN LOGGET IND VED UPDATE
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 nuvaerendeUid = user.uid;
@@ -373,7 +376,7 @@
             setTimeout(() => { toast.style.top = "-100px"; }, 3500);
         };
 
-        // GOOGLE FIREBASE SIKKERT LOGIN
+        // LOGIN SYSTEM
         window.login = async function() {
             const email = document.getElementById('email-input').value.trim();
             const password = document.getElementById('password-input').value.trim();
@@ -399,7 +402,7 @@
             }
         };
 
-        // OPRET NY PROFIL MED PASSWORD
+        // PROFILOPRETTELSE
         window.opretProfil = async function() {
             const managerNavn = document.getElementById('username-input').value.trim();
             const email = document.getElementById('email-input').value.trim();
@@ -436,7 +439,7 @@
             opdaterSkaerm();
         }
 
-        // HOVEDFUNKTION TIL SKÆRMTREGNING
+        // DESIGN-GENERATOR (SKÆRMTEGNING)
         window.opdaterSkaerm = function() {
             if (!nuvaerendeManager) {
                 const lbContainer = document.getElementById('leaderboard-container');
@@ -461,6 +464,7 @@
             document.getElementById('req-hs').innerText = antalHS;
             document.getElementById('req-ds').innerText = antalDS;
 
+            // Tegn markedet
             const marketContainer = document.getElementById('market-container');
             const filtreredeSpillere = spillere.filter(s => s.raekke === aktivRaekke);
             filtreredeSpillere.sort((a, b) => b.pris - a.pris);
@@ -474,13 +478,14 @@
                             <div style="font-size:1.05em; font-weight:bold; margin:3px 0;">${spiller.navn}</div>
                             <div style="color:var(--accent); font-weight:bold; font-size:1em;">${spiller.pris.toLocaleString('da-DK')} DKK</div>
                         </div>
-                        <button class="btn" style="margin-top:10px;" onclick="koebSpiller(${spiller.id})" ${ejer || budget < spiller.pris ? 'disabled' : ''}>
+                        <button class="btn ${ejer ? 'owned' : ''}" style="margin-top:10px;" onclick="haandterKnapKlik(${spiller.id}, ${ejer})">
                             ${ejer ? 'På holdet ✔' : 'Køb'}
                         </button>
                     </div>
                 `;
             }).join('');
 
+            // Tegn holdlisten
             const teamContainer = document.getElementById('my-team-container');
             teamContainer.innerHTML = mitHold.length === 0 ? '<li style="color:var(--text-muted)">Ingen spillere valgt</li>' : 
                 mitHold.map(s => `
@@ -490,6 +495,7 @@
                     </li>
                 `).join('');
 
+            // Leaderboard
             const lbContainer = document.getElementById('leaderboard-container');
             if (lbContainer) {
                 managere.sort((a,b) => b.point - a.point);
@@ -502,6 +508,7 @@
                 `).join('');
             }
 
+            // Turneringsliste
             document.getElementById('tournament-history-container').innerHTML = turneringer.map(t => `
                 <div class="tournament-badge" onclick="visTurnering('${t.navn}')">
                     <div style="font-weight:bold; color:var(--accent-blue); font-size:0.9em;">${t.navn}</div>
@@ -517,29 +524,60 @@
             opdaterSkaerm();
         };
 
-        window.koebSpiller = async function(id) {
-            if(!nuvaerendeUid) return;
-            const spiller = spillere.find(p => p.id === id);
-            if (spiller && budget >= spiller.pris && mitHold.length < 6) {
-                const nyeIder = mitHold.map(p => p.id);
-                nyeIder.push(id);
-                const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
-                await set(ref(db, `managere/${nuvaerendeUid}`), {
-                    uid: nuvaerendeUid,
-                    navn: nuvaerendeManager,
-                    budget: budget - spiller.pris,
-                    hold: nyeIder,
-                    point: minProfilData.point || 0
-                });
-                visBesked(`Købt: ${spiller.navn}!`);
+        // KNASTRREGEN FUNKTION: HÅNDTERER BÅDE KØB OG AFVALG PÅ SAMME KNAP
+        window.haandterKnapKlik = function(id, ejer) {
+            if (ejer) {
+                // Hvis man allerede ejer ham, så fravælges/sælges han med det samme!
+                window.saelgSpiller(id);
+            } else {
+                // Ellers forsøger vi at købe ham
+                window.koebSpiller(id);
             }
         };
 
+        // INDKØB MED SIKKERHEDSLÅSE
+        window.koebSpiller = async function(id) {
+            if(!nuvaerendeUid) return;
+            const spiller = spillere.find(p => p.id === id);
+            if (!spiller) return;
+
+            const nuvaerendeAntalIRaekke = mitHold.filter(s => s.raekke === spiller.raekke).length;
+
+            // KATEGORI SIKKERHEDSLÅSE
+            if (spiller.raekke === 'HS' && nuvaerendeAntalIRaekke >= 4) {
+                return visBesked(`Holdet er fyldt i denne kategori! Du kan højst købe 4 Herresingler.`, "fejl");
+            }
+            if (spiller.raekke === 'DS' && nuvaerendeAntalIRaekke >= 2) {
+                return visBesked(`Holdet er fyldt i denne kategori! Du kan højst købe 2 Damesingler.`, "fejl");
+            }
+            if (mitHold.length >= 6) {
+                return visBesked(`Dit hold er helt fuldt (Maks 6 spillere totalt)!`, "fejl");
+            }
+            if (budget < spiller.pris) {
+                return visBesked(`Du har ikke råd! Spilleren koster mere end dit budget.`, "fejl");
+            }
+
+            const nyeIder = mitHold.map(p => p.id);
+            nyeIder.push(id);
+            const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
+
+            await set(ref(db, `managere/${nuvaerendeUid}`), {
+                uid: nuvaerendeUid,
+                navn: nuvaerendeManager,
+                budget: budget - spiller.pris,
+                hold: nyeIder,
+                point: minProfilData.point || 0
+            });
+            visBesked(`Købt: ${spiller.navn}!`);
+        };
+
+        // SALG AF SPILLERE
         window.saelgSpiller = async function(id) {
             if(!nuvaerendeUid) return;
             const spiller = spillere.find(p => p.id === id);
             const nyeIder = mitHold.filter(p => p.id !== id).map(p => p.id);
             const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
+
             await set(ref(db, `managere/${nuvaerendeUid}`), {
                 uid: nuvaerendeUid,
                 navn: nuvaerendeManager,
@@ -547,7 +585,7 @@
                 hold: nyeIder,
                 point: minProfilData.point || 0
             });
-            visBesked(`Solgt: ${spiller.navn}.`, "fejl");
+            visBesked(`Fjernet: ${spiller.navn}.`, "fejl");
         };
 
         window.gemOgLaasHold = function() {
@@ -560,6 +598,7 @@
             }
         };
 
+        // MODALER OG SPIONERING
         window.visTurnering = function(navn) {
             document.getElementById('modal-titel').innerText = `📊 ${navn}`;
             document.getElementById('modal-subtitel').innerText = "Top resultater fra rækkerne:";
@@ -609,6 +648,7 @@
 
         window.lukModal = function() { document.getElementById('app-modal').style.display = 'none'; };
 
+        // FIREBASE LIVE SYNKRONISERING
         onValue(ref(db, "managere"), (snapshot) => {
             managere = [];
             snapshot.forEach((childSnapshot) => {
@@ -652,7 +692,10 @@
             <h1 style="margin:0; font-size:1.6em;">Badminton Fantasy Manager</h1>
             <p style="color: var(--text-muted); margin: 5px 0 0 0;">Manager: <span id="current-user-display" style="color:white; font-weight:bold;">Logget ud</span> • Sæson 2026</p>
         </div>
-        <div class="budget-badge">Budget: <span id="budget-display">50.000.000</span> DKK</div>
+        <div class="header-info-box">
+            <div class="window-badge">Transfervindue: 🟢 ÅBENT</div>
+            <div class="budget-badge">Budget: <span id="budget-display">50.000.000</span> DKK</div>
+        </div>
     </header>
 
     <div>

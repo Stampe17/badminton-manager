@@ -27,12 +27,26 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 1000;
         }
-        .login-box {
-            background: var(--card-bg); padding: 40px; border-radius: 12px; text-align: center; max-width: 400px; width: 90%;
+.login-box {
+            background: var(--card-bg); 
+            padding: 30px 20px; /* Lidt mindre padding på mobilen */
+            border-radius: 12px; 
+            text-align: center; 
+            max-width: 400px; 
+            width: 85%; /* Sørger for den fylder skærmen pænt ud på mobilen */
             border-bottom: 4px solid var(--accent-blue);
+            box-sizing: border-box;
         }
         .login-input {
-            width: 100%; padding: 12px; margin: 8px 0; border-radius: 6px; border: 1px solid #374151; background: #111827; color: white; font-size: 1em; box-sizing: border-box;
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border-radius: 6px; 
+            border: 1px solid #374151; 
+            background: #111827; 
+            color: white; 
+            font-size: 16px; /* 16px forhindrer at iPhone zoomer mærkeligt ind */
+            box-sizing: border-box;
         }
 
         #toast-notification {

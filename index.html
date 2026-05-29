@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badminton Fantasy Manager</title>
+    
+    <!-- KODE TIL AT GØRE DET TIL EN RIGTIG APP -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Badminton Fantasy Manager</title>
+
     <style>
         :root {
             --bg-color: #0f172a;
@@ -24,6 +27,7 @@
             color: var(--text-main);
             margin: 0;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         #login-screen {
@@ -73,62 +77,76 @@
 
         .dashboard {
             max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
-        }
-
-        @media (max-width: 768px) { 
-            .dashboard { grid-template-columns: 1fr; } 
-            body { padding: 10px; }
+            width: 100%; box-sizing: border-box;
         }
 
         header {
             grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
             background: var(--card-bg); padding: 20px; border-radius: 12px; border-bottom: 4px solid var(--accent);
+            box-sizing: border-box;
         }
 
-        .budget-badge { background: #065f46; color: #34d399; padding: 10px 20px; border-radius: 30px; font-weight: bold; }
-        .section { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .budget-badge { background: #065f46; color: #34d399; padding: 10px 20px; border-radius: 30px; font-weight: bold; white-space: nowrap; }
+        .section { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-sizing: border-box; width: 100%; }
 
-        .tabs-container { display: flex; gap: 10px; margin: 15px 0; }
-        .tab-btn { background: #334155; color: var(--text-main); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .tabs-container { display: flex; gap: 10px; margin: 15px 0; width: 100%; }
+        .tab-btn { background: #334155; color: var(--text-main); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; text-align: center; }
         .tab-btn.active { background: var(--accent); }
 
         .market-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px; 
-            max-height: 550px; overflow-y: auto; padding-right: 10px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; 
+            max-height: 550px; overflow-y: auto; padding-right: 5px; width: 100%; box-sizing: border-box;
         }
 
         .player-card {
-            background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;
+            background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;
         }
 
-        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; }
         .btn:disabled { background: #4b5563; cursor: not-allowed; }
 
         .leaderboard-table { width: 100%; border-collapse: collapse; }
-        .leaderboard-table th, .leaderboard-table td { padding: 12px; text-align: left; border-bottom: 1px solid #374151; }
+        .leaderboard-table th, .leaderboard-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #374151; }
         .clickable-row { cursor: pointer; transition: background 0.2s; }
         .clickable-row:hover { background: #334155; }
 
-        .tournament-history { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; }
-        .tournament-badge { background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; cursor: pointer; min-width: 150px; text-align: center; transition: transform 0.2s; }
-        .tournament-badge:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
+        .tournament-history { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .tournament-badge { background: #111827; border: 1px solid #374151; padding: 12px 15px; border-radius: 8px; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%; }
+        .tournament-badge:hover { border-color: var(--accent-blue); }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 10005; }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 12px; max-width: 650px; width: 90%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+        .modal-content { background: var(--card-bg); padding: 25px 20px; border-radius: 12px; max-width: 650px; width: 92%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5em; cursor: pointer; color: var(--text-muted); }
         
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; max-height: 400px; overflow-y: auto; }
-        @media (max-width: 500px) { .modal-grid { grid-template-columns: 1fr; } }
         .column-title { border-bottom: 2px solid #374151; padding-bottom: 5px; margin-bottom: 10px; color: var(--accent-blue); font-weight: bold; }
         .result-item { display: flex; justify-content: space-between; padding: 8px; background: #111827; margin-bottom: 5px; border-radius: 6px; font-size: 0.9em; }
+
+        /* 📱 SKRÆDDERSYET MOBIL-OPTIMERING (INGEN SIDELÆNS SCROLL) */
+        @media (max-width: 768px) { 
+            body { padding: 8px; }
+            .dashboard { grid-template-columns: 1fr; gap: 12px; width: 100%; overflow-x: hidden; }
+            header { flex-direction: column; gap: 15px; text-align: center; grid-column: auto; width: 100%; }
+            .market-grid { grid-template-columns: 1fr 1fr; gap: 10px; max-height: 450px; }
+            .player-card { padding: 10px; }
+            .player-card style { font-size: 0.9em; }
+            .modal-grid { grid-template-columns: 1fr; gap: 15px; }
+            .section { padding: 15px 10px; }
+            .tournament-history { flex-direction: column; }
+            .tournament-badge { padding: 12px; }
+            #tournament-section-box { grid-column: auto !important; }
+        }
+
+        @media (max-width: 420px) {
+            .market-grid { grid-template-columns: 1fr; }
+        }
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // VIGTIGT: Sæt dine egne Firebase-nøgler ind her igen:
         const firebaseConfig = {
             apiKey: "AIzaSyDAdUJYl_AsfbPvW1TMs69FtNuurKIN0Mo",
             authDomain: "badminton-manager-c69f0.firebaseapp.com",
@@ -261,7 +279,7 @@
             { id: 106, navn: "Wen Chi Hsu", raekke: "DS", pris: 7300000, point: 50, resultat: "1. runde" },
             { id: 107, navn: "Lo Sin Yan Happy", raekke: "DS", pris: 7100000, point: 50, resultat: "1. runde" },
             { id: 108, navn: "Malvika Bansod", raekke: "DS", pris: 6900000, point: 50, resultat: "1. runde" },
-            { id: 109, navn: "Asuka Takahashi", raekke: "DS", pris: 6700000, point: 50, resultat: "1. runde" },
+            { id: 109, navn: "Asuka Takahashi", raSystem: "DS", pris: 6700000, point: 50, resultat: "1. runde" },
             { id: 110, navn: "Thet Htar Thuzar", raekke: "DS", pris: 6500000, point: 50, resultat: "1. runde" },
             { id: 111, navn: "Aakarshi Kashyap", raekke: "DS", pris: 6300000, point: 50, resultat: "1. runde" },
             { id: 112, navn: "Lauren Lam", raekke: "DS", pris: 6100000, point: 50, resultat: "1. runde" },
@@ -318,6 +336,23 @@
             { navn: "Hong Kong Open (S500)", dato: "17.-22. Nov 2026" },
             { navn: "World Tour Finals", dato: "9.-13. Dec 2026" }
         ];
+
+        // 🧠 HUKOMMELSE: LOG DETEKTOR (HOLDER DIG INDLOGGET VED OPDATERING)
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                nuvaerendeUid = user.uid;
+                const userRef = ref(db, `managere/${nuvaerendeUid}`);
+                const userSnap = await get(userRef);
+                if (userSnap.exists()) {
+                    nuvaerendeManager = userSnap.val().navn;
+                    document.getElementById('current-user-display').innerText = nuvaerendeManager;
+                    document.getElementById('login-screen').style.display = 'none';
+                    opdaterSkaerm();
+                }
+            } else {
+                document.getElementById('login-screen').style.display = 'flex';
+            }
+        });
 
         // UI NOTIFIKATIONER
         window.visBesked = function(tekst, type = "succes") {
@@ -470,7 +505,7 @@
             document.getElementById('tournament-history-container').innerHTML = turneringer.map(t => `
                 <div class="tournament-badge" onclick="visTurnering('${t.navn}')">
                     <div style="font-weight:bold; color:var(--accent-blue); font-size:0.9em;">${t.navn}</div>
-                    <div style="font-size:0.75em; color:var(--text-muted); margin-top:5px;">${t.dato}</div>
+                    <div style="font-size:0.8em; color:var(--text-muted); font-weight:bold;">${t.dato}</div>
                 </div>
             `).join('');
         };
@@ -596,6 +631,7 @@
     <span id="toast-icon">🟢</span> <span id="toast-message">Besked her</span>
 </div>
 
+<!-- SIKKER LOGIN SKÆRM -->
 <div id="login-screen">
     <div class="login-box">
         <h2 style="margin:0;">🏸 Badminton Manager Liga</h2>
@@ -613,7 +649,7 @@
 <div class="dashboard">
     <header>
         <div>
-            <h1>Badminton Fantasy Manager</h1>
+            <h1 style="margin:0; font-size:1.6em;">Badminton Fantasy Manager</h1>
             <p style="color: var(--text-muted); margin: 5px 0 0 0;">Manager: <span id="current-user-display" style="color:white; font-weight:bold;">Logget ud</span> • Sæson 2026</p>
         </div>
         <div class="budget-badge">Budget: <span id="budget-display">50.000.000</span> DKK</div>
@@ -649,7 +685,7 @@
         </div>
     </div>
 
-    <div class="section" style="grid-column: 1 / -1;">
+    <div class="section" id="tournament-section-box" style="grid-column: 1 / -1;">
         <h2>📊 Turnerings-arkiv (Sidste 10)</h2>
         <div class="tournament-history" id="tournament-history-container"></div>
     </div>

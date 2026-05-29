@@ -24,35 +24,46 @@
         }
 
         #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 1000;
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: #0f172a; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999;
         }
-.login-box {
+
+        .login-box {
             background: var(--card-bg); 
-            padding: 30px 20px; /* Lidt mindre padding på mobilen */
+            padding: 35px 25px; 
             border-radius: 12px; 
             text-align: center; 
             max-width: 400px; 
-            width: 85%; /* Sørger for den fylder skærmen pænt ud på mobilen */
+            width: 88%; 
             border-bottom: 4px solid var(--accent-blue);
             box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
+
         .login-input {
             width: 100%; 
             padding: 12px; 
-            margin: 8px 0; 
+            margin: 10px 0; 
             border-radius: 6px; 
             border: 1px solid #374151; 
             background: #111827; 
             color: white; 
-            font-size: 16px; /* 16px forhindrer at iPhone zoomer mærkeligt ind */
+            font-size: 16px; 
             box-sizing: border-box;
         }
 
         #toast-notification {
             position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
             background: #111827; border-left: 5px solid var(--accent); padding: 15px 30px;
-            border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 999;
+            border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10000;
             transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-weight: bold; display: flex; align-items: center; gap: 10px;
         }
@@ -61,7 +72,10 @@
             max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
         }
 
-        @media (max-width: 768px) { .dashboard { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { 
+            .dashboard { grid-template-columns: 1fr; } 
+            body { padding: 10px; }
+        }
 
         header {
             grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
@@ -96,7 +110,7 @@
         .tournament-badge { background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; cursor: pointer; min-width: 150px; text-align: center; transition: transform 0.2s; }
         .tournament-badge:hover { transform: translateY(-3px); border-color: var(--accent-blue); }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 10005; }
         .modal-content { background: var(--card-bg); padding: 30px; border-radius: 12px; max-width: 650px; width: 90%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5em; cursor: pointer; color: var(--text-muted); }
         
@@ -126,14 +140,15 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
+        // GLOBALE VARIABLER
         let budget = 50000000;
         let mitHold = [];
         let aktivRaekke = 'HS';
         let nuvaerendeManager = "";
-        let nuvaerendeUid = ""; // Managerens unikke Google ID
+        let nuvaerendeUid = ""; 
         let managere = [];
 
-        // Database
+        // Database over spillere
         const spillere = [
             { id: 1, navn: "Shi Yu Qi", raekke: "HS", pris: 26000000, point: 1000, resultat: "Vinder" },
             { id: 2, navn: "Kunlavut Vitidsarn", raekke: "HS", pris: 24500000, point: 500, resultat: "Semifinale" },
@@ -252,7 +267,7 @@
             { id: 115, navn: "Neslihan Arin", raekke: "DS", pris: 5500000, point: 50, resultat: "1. runde" },
             { id: 116, navn: "Lianne Tan", raekke: "DS", pris: 5300000, point: 50, resultat: "1. runde" },
             { id: 117, navn: "Tanya Hemanth", raekke: "DS", pris: 5100000, point: 50, resultat: "1. runde" },
-            { id: 118, navn: "Huang Ching Ping", raekke: "DS", pris: 4900000, point: 50, resultat: "1. runde" },
+            { id: 118, navn: "Huang Ching Ping", raekke: "DS", pris: 4900000, point: 49, resultat: "1. runde" },
             { id: 119, navn: "Manami Suizu", raekke: "DS", pris: 4700000, point: 50, resultat: "1. runde" },
             { id: 120, navn: "Lalinrat Chaiwan", raekke: "DS", pris: 4500000, point: 50, resultat: "1. runde" },
             { id: 121, navn: "Letshanaa Karupathevan", raekke: "DS", pris: 4300000, point: 50, resultat: "1. runde" },
@@ -288,8 +303,8 @@
         ];
 
         const turneringer = [
-        { navn: "⚡ TEST: Singapore Open (S750)", dato: "26.-31. Maj 2026" },    
-        { navn: "China Masters (S750)", dato: "1.-6. Sept 2026" },
+            { navn: "⚡ TEST: Singapore Open (S750)", dato: "26.-31. Maj 2026" },    
+            { navn: "China Masters (S750)", dato: "1.-6. Sept 2026" },
             { navn: "Korea Open (S500)", dato: "8.-13. Sept 2026" },
             { navn: "Arctic Open (S500)", dato: "6.-11. Okt 2026" },
             { navn: "Denmark Open (S750)", dato: "13.-18. Okt 2026" },
@@ -301,23 +316,7 @@
             { navn: "World Tour Finals", dato: "9.-13. Dec 2026" }
         ];
 
-        // LIVE LIGA SYNKRONISERING
-        onValue(ref(db, "managere"), (snapshot) => {
-            managere = [];
-            snapshot.forEach((childSnapshot) => {
-                managere.push(childSnapshot.val());
-            });
-            
-            if (nuvaerendeUid) {
-                const mig = managere.find(m => m.uid === nuvaerendeUid);
-                if (mig) {
-                    budget = mig.budget;
-                    mitHold = mig.hold ? mig.hold.map(id => spillere.find(p => p.id === id)) : [];
-                }
-            }
-            opdaterSkaerm();
-        });
-
+        // UI NOTIFIKATIONER
         window.visBesked = function(tekst, type = "succes") {
             const toast = document.getElementById('toast-notification');
             const msg = document.getElementById('toast-message');
@@ -334,22 +333,19 @@
             
             toast.style.top = "20px";
             setTimeout(() => { toast.style.top = "-100px"; }, 3500);
-        }
+        };
 
         // GOOGLE FIREBASE SIKKERT LOGIN
         window.login = async function() {
-            const managerNavn = document.getElementById('username-input').value.trim();
             const email = document.getElementById('email-input').value.trim();
             const password = document.getElementById('password-input').value.trim();
 
             if (!email || !password) return alert("Indtast venligst både e-mail og password!");
 
             try {
-                // Forsøger at logge ind
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 nuvaerendeUid = userCredential.user.uid;
                 
-                // Find manager-navn fra databasen via UID
                 const userRef = ref(db, `managere/${nuvaerendeUid}`);
                 const userSnap = await get(userRef);
                 nuvaerendeManager = userSnap.val().navn;
@@ -363,7 +359,7 @@
                     alert("Fejl: " + error.message);
                 }
             }
-        }
+        };
 
         // OPRET NY PROFIL MED PASSWORD
         window.opretProfil = async function() {
@@ -377,12 +373,10 @@
             if (password.length < 6) return alert("Password skal være på mindst 6 tegn!");
 
             try {
-                // Opretter brugeren hos Google centralt
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 nuvaerendeUid = userCredential.user.uid;
                 nuvaerendeManager = managerNavn;
 
-                // Opretter holdet i Realtime Databasen låst til denne brugers UID
                 await set(ref(db, `managere/${nuvaerendeUid}`), {
                     uid: nuvaerendeUid,
                     navn: nuvaerendeManager,
@@ -396,7 +390,7 @@
             } catch (error) {
                 alert("Kunne ikke oprette profil: " + error.message);
             }
-        }
+        };
 
         function afslutLogin() {
             document.getElementById('current-user-display').innerText = nuvaerendeManager;
@@ -404,7 +398,23 @@
             opdaterSkaerm();
         }
 
+        // HOVEDFUNKTION TIL SKÆRMTREGNING
         window.opdaterSkaerm = function() {
+            if (!nuvaerendeManager) {
+                const lbContainer = document.getElementById('leaderboard-container');
+                if (lbContainer) {
+                    managere.sort((a,b) => b.point - a.point);
+                    lbContainer.innerHTML = managere.map((m, idx) => `
+                        <tr class="clickable-row" onclick="spionerManager('${m.uid}')">
+                            <td><strong>#${idx+1}</strong></td>
+                            <td>👤 ${m.navn}</td>
+                            <td style="color:var(--accent); font-weight:bold;">${(m.point || 0).toLocaleString('da-DK')} p</td>
+                        </tr>
+                    `).join('');
+                }
+                return;
+            }
+
             document.getElementById('budget-display').innerText = budget.toLocaleString('da-DK');
             document.getElementById('team-count').innerText = mitHold.length;
 
@@ -413,7 +423,6 @@
             document.getElementById('req-hs').innerText = antalHS;
             document.getElementById('req-ds').innerText = antalDS;
 
-            // Tegn marked
             const marketContainer = document.getElementById('market-container');
             const filtreredeSpillere = spillere.filter(s => s.raekke === aktivRaekke);
             filtreredeSpillere.sort((a, b) => b.pris - a.pris);
@@ -434,7 +443,6 @@
                 `;
             }).join('');
 
-            // Tegn mit hold
             const teamContainer = document.getElementById('my-team-container');
             teamContainer.innerHTML = mitHold.length === 0 ? '<li style="color:var(--text-muted)">Ingen spillere valgt</li>' : 
                 mitHold.map(s => `
@@ -444,43 +452,40 @@
                     </li>
                 `).join('');
 
-            // Tegn Leaderboard
             const lbContainer = document.getElementById('leaderboard-container');
-            managere.sort((a,b) => b.point - a.point);
-            lbContainer.innerHTML = managere.map((m, idx) => `
-                <tr class="clickable-row" onclick="spionerManager('${m.uid}')">
-                    <td><strong>#${idx+1}</strong></td>
-                    <td>👤 ${m.navn}</td>
-                    <td style="color:var(--accent); font-weight:bold;">${m.point.toLocaleString('da-DK')} p</td>
-                </tr>
-            `).join('');
+            if (lbContainer) {
+                managere.sort((a,b) => b.point - a.point);
+                lbContainer.innerHTML = managere.map((m, idx) => `
+                    <tr class="clickable-row" onclick="spionerManager('${m.uid}')">
+                        <td><strong>#${idx+1}</strong></td>
+                        <td>👤 ${m.navn}</td>
+                        <td style="color:var(--accent); font-weight:bold;">${(m.point || 0).toLocaleString('da-DK')} p</td>
+                    </tr>
+                `).join('');
+            }
 
-            // Tegn arkiv
             document.getElementById('tournament-history-container').innerHTML = turneringer.map(t => `
                 <div class="tournament-badge" onclick="visTurnering('${t.navn}')">
                     <div style="font-weight:bold; color:var(--accent-blue); font-size:0.9em;">${t.navn}</div>
                     <div style="font-size:0.75em; color:var(--text-muted); margin-top:5px;">${t.dato}</div>
                 </div>
             `).join('');
-        }
+        };
 
         window.skiftRaekke = function(raekke) {
             aktivRaekke = raekke;
             document.getElementById('btn-hs').classList.toggle('active', raekke === 'HS');
             document.getElementById('btn-ds').classList.toggle('active', raekke === 'DS');
             opdaterSkaerm();
-        }
+        };
 
-        // SIKRE TRANSAKTIONER BUNDET TIL RIGTIGT UID
         window.koebSpiller = async function(id) {
             if(!nuvaerendeUid) return;
             const spiller = spillere.find(p => p.id === id);
             if (spiller && budget >= spiller.pris && mitHold.length < 6) {
                 const nyeIder = mitHold.map(p => p.id);
                 nyeIder.push(id);
-
                 const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
-
                 await set(ref(db, `managere/${nuvaerendeUid}`), {
                     uid: nuvaerendeUid,
                     navn: nuvaerendeManager,
@@ -490,42 +495,38 @@
                 });
                 visBesked(`Købt: ${spiller.navn}!`);
             }
-        }
+        };
 
         window.saelgSpiller = async function(id) {
             if(!nuvaerendeUid) return;
             const spiller = spillere.find(p => p.id === id);
             const nyeIder = mitHold.filter(p => p.id !== id).map(p => p.id);
             const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
-
             await set(ref(db, `managere/${nuvaerendeUid}`), {
                 uid: nuvaerendeUid,
                 navn: nuvaerendeManager,
                 budget: budget + spiller.pris,
                 hold: nyeIder,
                 point: minProfilData.point || 0
-                });
+            });
             visBesked(`Solgt: ${spiller.navn}.`, "fejl");
-        }
+        };
 
         window.gemOgLaasHold = function() {
             const antalHS = mitHold.filter(s => s.raekke === 'HS').length;
             const antalDS = mitHold.filter(s => s.raekke === 'DS').length;
-
             if (antalHS === 4 && antalDS === 2) {
                 visBesked(`Fantastisk, ${nuvaerendeManager}! Dit hold opfylder alle krav og er låst! 🚀`);
             } else {
                 visBesked(`Fejl: Holdet SKAL have præcis 4 Herresingler og 2 Damesingler!`, "fejl");
             }
-        }
+        };
 
         window.visTurnering = function(navn) {
             document.getElementById('modal-titel').innerText = `📊 ${navn}`;
             document.getElementById('modal-subtitel').innerText = "Top resultater fra rækkerne:";
-            
             const hsSpillere = spillere.filter(s => s.raekke === 'HS').slice(0, 8);
             const dsSpillere = spillere.filter(s => s.raekke === 'DS').slice(0, 8);
-
             const wrapper = document.getElementById('modal-body-wrapper');
             wrapper.innerHTML = `
                 <div class="modal-grid">
@@ -542,17 +543,16 @@
                 </div>
             `;
             document.getElementById('app-modal').style.display = 'flex';
-        }
+        };
 
         window.spionerManager = function(uid) {
             const m = managere.find(manager => manager.uid === uid);
+            if (!m) return;
             document.getElementById('modal-titel').innerText = `👤 ${m.navn}'s Hold`;
             document.getElementById('modal-subtitel').innerText = `Resterende budget: ${m.budget.toLocaleString('da-DK')} DKK`;
-            
-            const managerHoldSpillere = m.hold ? m.hold.map(sid => spillere.find(p => p.id === sid)) : [];
+            const managerHoldSpillere = m.hold ? m.hold.map(sid => spillere.find(p => p.id === sid)).filter(Boolean) : [];
             const hs = managerHoldSpillere.filter(s => s.raekke === 'HS');
             const ds = managerHoldSpillere.filter(s => s.raekke === 'DS');
-
             const wrapper = document.getElementById('modal-body-wrapper');
             wrapper.innerHTML = `
                 <div class="modal-grid">
@@ -567,9 +567,24 @@
                 </div>
             `;
             document.getElementById('app-modal').style.display = 'flex';
-        }
+        };
 
-        window.lukModal = function() { document.getElementById('app-modal').style.display = 'none'; }
+        window.lukModal = function() { document.getElementById('app-modal').style.display = 'none'; };
+
+        onValue(ref(db, "managere"), (snapshot) => {
+            managere = [];
+            snapshot.forEach((childSnapshot) => {
+                managere.push(childSnapshot.val());
+            });
+            if (nuvaerendeUid) {
+                const mig = managere.find(m => m.uid === nuvaerendeUid);
+                if (mig) {
+                    budget = mig.budget;
+                    mitHold = mig.hold ? mig.hold.map(id => spillere.find(p => p.id === id)).filter(Boolean) : [];
+                }
+            }
+            opdaterSkaerm();
+        });
     </script>
 </head>
 <body>
@@ -578,14 +593,13 @@
     <span id="toast-icon">🟢</span> <span id="toast-message">Besked her</span>
 </div>
 
-<!-- SIKKER LOGIN SKÆRM -->
 <div id="login-screen">
     <div class="login-box">
         <h2 style="margin:0;">🏸 Badminton Manager Liga</h2>
         <p style="color: var(--text-muted); font-size: 0.9em; margin-top:5px; margin-bottom:20px;">Log ind eller opret en manager-konto</p>
         
         <input type="text" id="username-input" class="login-input" placeholder="Manager-navn (Kun ved oprettelse)...">
-        <input type="email" id="email-input" class="login-input" placeholder="E-mail adresse..." autofocus>
+        <input type="email" id="email-input" class="login-input" placeholder="E-mail adresse...">
         <input type="password" id="password-input" class="login-input" placeholder="Password (Mindst 6 tegn)...">
         
         <button class="btn" style="background: var(--accent); margin-top: 15px;" onclick="login()">Log ind som eksisterende manager 🔓</button>

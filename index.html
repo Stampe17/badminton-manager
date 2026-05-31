@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Badminton Fantasy Manager</title>
-    
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -18,136 +17,66 @@
             --accent-blue: #3b82f6;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
+            --admin-bg: #1e1b4b;
         }
 
-        body {
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #login-screen {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: #0f172a; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 9999;
-        }
-
-        .login-box {
-            background: var(--card-bg); 
-            padding: 35px 25px; 
-            border-radius: 12px; 
-            text-align: center; 
-            max-width: 400px; 
-            width: 88%; 
-            border-bottom: 4px solid var(--accent-blue);
-            box-sizing: border-box;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .login-input {
-            width: 100%; 
-            padding: 12px; 
-            margin: 10px 0; 
-            border-radius: 6px; 
-            border: 1px solid #374151; 
-            background: #111827; 
-            color: white; 
-            font-size: 16px; 
-            box-sizing: border-box;
-        }
-
-        #toast-notification {
-            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
-            background: #111827; border-left: 5px solid var(--accent); padding: 15px 30px;
-            border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10000;
-            transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            font-weight: bold; display: flex; align-items: center; gap: 10px;
-        }
-
-        .dashboard {
-            max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 20px;
-            width: 100%; box-sizing: border-box;
-        }
-
-        header {
-            grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center;
-            background: var(--card-bg); padding: 20px; border-radius: 12px; border-bottom: 4px solid var(--accent);
-            box-sizing: border-box;
-        }
-
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; box-sizing: border-box; }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+        .login-box { background: var(--card-bg); padding: 35px 25px; border-radius: 12px; text-align: center; max-width: 400px; width: 88%; border-bottom: 4px solid var(--accent-blue); box-sizing: border-box; }
+        .login-input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #374151; background: #111827; color: white; font-size: 16px; box-sizing: border-box; }
+        #toast-notification { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); background: #111827; border-left: 5px solid var(--accent); padding: 15px 30px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 10000; transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .dashboard { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 20px; width: 100%; box-sizing: border-box; }
+        header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 20px; border-radius: 12px; border-bottom: 4px solid var(--accent); box-sizing: border-box; }
         .header-info-box { display: flex; gap: 15px; align-items: center; }
         .budget-badge { background: #065f46; color: #34d399; padding: 10px 20px; border-radius: 30px; font-weight: bold; white-space: nowrap; }
         .window-badge { background: #1e3a8a; color: #60a5fa; padding: 10px 20px; border-radius: 30px; font-weight: bold; white-space: nowrap; }
         .section { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; box-sizing: border-box; width: 100%; }
-
         .tabs-container { display: flex; gap: 10px; margin: 15px 0; width: 100%; }
         .tab-btn { background: #334155; color: var(--text-main); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; text-align: center; }
         .tab-btn.active { background: var(--accent); }
-
-        .market-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; 
-            max-height: 550px; overflow-y: auto; padding-right: 5px; width: 100%; box-sizing: border-box;
-        }
-
-        .player-card {
-            background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box;
-        }
-
-        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; transition: background 0.2s; }
+        .market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 5px; width: 100%; box-sizing: border-box; }
+        .player-card { background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
+        .btn { background: var(--accent); color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; box-sizing: border-box; }
         .btn:disabled { background: #4b5563 !important; cursor: not-allowed; opacity: 0.4; }
         .btn.owned { background: #1e3a8a; border: 1px solid var(--accent-blue); }
-        .btn.owned:hover { background: var(--accent-red); border-color: var(--accent-red); }
-
+        .logout-btn { background: var(--accent-red); color: white; border: none; padding: 5px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 0.85em; margin-left: 10px; transition: background 0.2s; }
+        .logout-btn:hover { background: #dc2626; }
         .leaderboard-table { width: 100%; border-collapse: collapse; }
         .leaderboard-table th, .leaderboard-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid #374151; }
-        .clickable-row { cursor: pointer; transition: background 0.2s; }
+        .clickable-row { cursor: pointer; }
         .clickable-row:hover { background: #334155; }
-
-        .tournament-history { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .tournament-badge { background: #111827; border: 1px solid #374151; padding: 12px 15px; border-radius: 8px; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: 100%; }
+        .tournament-history { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; width: 100%; }
+        .tournament-badge { background: #111827; border: 1px solid #374151; padding: 15px; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; box-sizing: border-box; }
         .tournament-badge:hover { border-color: var(--accent-blue); }
+        
+        .admin-section { background: var(--admin-bg); border: 2px solid var(--accent-blue); grid-column: 1 / -1; display: none; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+        .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .admin-scroll-box { max-height: 550px; overflow-y: auto; padding-right: 10px; }
+        .admin-row { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 8px; margin-bottom: 6px; border-radius: 6px; }
+        .admin-select { background: #111827; color: white; border: 1px solid #4b5563; padding: 6px; border-radius: 6px; width: 55%; font-size: 0.9em; }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 10005; }
-        .modal-content { background: var(--card-bg); padding: 25px 20px; border-radius: 12px; max-width: 650px; width: 92%; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.5); box-sizing: border-box; }
+        .modal-content { background: var(--card-bg); padding: 25px 20px; border-radius: 12px; max-width: 650px; width: 92%; position: relative; box-sizing: border-box; }
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5em; cursor: pointer; color: var(--text-muted); }
-        
         .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; max-height: 400px; overflow-y: auto; }
         .column-title { border-bottom: 2px solid #374151; padding-bottom: 5px; margin-bottom: 10px; color: var(--accent-blue); font-weight: bold; }
         .result-item { display: flex; justify-content: space-between; padding: 8px; background: #111827; margin-bottom: 5px; border-radius: 6px; font-size: 0.9em; }
 
-        /* 📱 MOBIL-OPTIMERING */
         @media (max-width: 768px) { 
             body { padding: 8px; }
-            .dashboard { grid-template-columns: 1fr; gap: 12px; width: 100%; overflow-x: hidden; }
-            header { flex-direction: column; gap: 12px; text-align: center; grid-column: auto; width: 100%; padding: 15px; }
+            .dashboard { grid-template-columns: 1fr; gap: 12px; }
+            header { flex-direction: column; gap: 12px; text-align: center; grid-column: auto; }
             .header-info-box { flex-direction: column; gap: 8px; width: 100%; }
-            .budget-badge, .window-badge { width: 100%; text-align: center; padding: 8px; }
-            .market-grid { grid-template-columns: 1fr 1fr; gap: 10px; max-height: 450px; }
-            .player-card { padding: 10px; }
-            .modal-grid { grid-template-columns: 1fr; gap: 15px; }
-            .section { padding: 15px 10px; }
-            #tournament-section-box { grid-column: auto !important; }
-        }
-
-        @media (max-width: 420px) {
-            .market-grid { grid-template-columns: 1fr; }
+            .market-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .admin-grid { grid-template-columns: 1fr; }
+            .tournament-history { grid-template-columns: 1fr 1fr; }
         }
     </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDAdUJYl_AsfbPvW1TMs69FtNuurKIN0Mo",
@@ -163,541 +92,496 @@
         const db = getDatabase(app);
         const auth = getAuth(app);
 
-        // GLOBALE VARIABLER
         let budget = 50000000;
         let mitHold = [];
         let aktivRaekke = 'HS';
         let nuvaerendeManager = "";
         let nuvaerendeUid = ""; 
         let managere = [];
-        let gemteTurneringerLive = {}; // Ret fejl: Fjernet ulovligt mellemrum
+        let gemteTurneringerLive = {};
 
-        // 📅 AUTOMATISK TRANSFERVINDUE TJEK (KUN MANDAG ER ÅBENT)
         const d = new Date();
         const erMandag = d.getDay() === 1; 
         const vinduesTekst = erMandag ? "🟢 ÅBENT" : "🔴 LÅST (Åbner mandag)";
 
-        // Database over spillere (Alle 150 intakte!)
-        const spillere = [
-            { id: 1, navn: "Shi Yu Qi", raekke: "HS", pris: 26000000, point: 1000, resultat: "Vinder" },
-            { id: 2, navn: "Kunlavut Vitidsarn", raekke: "HS", pris: 24500000, point: 500, resultat: "Semifinale" },
-            { id: 3, navn: "Anders Antonsen", raekke: "HS", pris: 23500000, point: 50, resultat: "1. runde" },
-            { id: 4, navn: "Christo Popov", raekke: "HS", pris: 22000000, point: 700, resultat: "Finale" },
-            { id: 5, navn: "Jonatan Christie", raekke: "HS", pris: 21000000, point: 500, resultat: "Semifinale" },
-            { id: 6, navn: "Chou Tien Chen", raekke: "HS", pris: 20000000, point: 300, resultat: "Kvartfinale" },
-            { id: 7, navn: "Li Shi Feng", raekke: "HS", pris: 19000000, point: 300, resultat: "Kvartfinale" },
-            { id: 8, navn: "Lin Chun-Yi", raekke: "HS", pris: 18000000, point: 300, resultat: "Kvartfinale" },
-            { id: 9, navn: "Alex Lanier", raekke: "HS", pris: 17000000, point: 300, resultat: "Kvartfinale" },
-            { id: 10, navn: "Lakshya Sen", raekke: "HS", pris: 16500000, point: 50, resultat: "1. runde" },
-            { id: 11, navn: "Kodai Naraoka", raekke: "HS", pris: 16000000, point: 50, resultat: "1. runde" },
-            { id: 12, navn: "Victor Lai", raekke: "HS", pris: 15500000, point: 50, resultat: "1. runde" },
-            { id: 13, navn: "Alwi Farhan", raekke: "HS", pris: 15000000, point: 50, resultat: "1. runde" },
-            { id: 14, navn: "Loh Kean Yew", raekke: "HS", pris: 14500000, point: 50, resultat: "1. runde" },
-            { id: 15, navn: "Weng Hong Yang", raekke: "HS", pris: 14000000, point: 50, resultat: "1. runde" },
-            { id: 16, navn: "Toma Junior Popov", raekke: "HS", pris: 13500000, point: 50, resultat: "1. runde" },
-            { id: 17, navn: "Kenta Nishimoto", raekke: "HS", pris: 13000000, point: 50, resultat: "1. runde" },
-            { id: 18, navn: "Chi Yu Jen", raekke: "HS", pris: 12500000, point: 50, resultat: "1. runde" },
-            { id: 19, navn: "Koki Watanabe", raekke: "HS", pris: 12000000, point: 50, resultat: "1. runde" },
-            { id: 20, navn: "Ayush Shetty", raekke: "HS", pris: 11500000, point: 50, resultat: "1. runde" },
-            { id: 21, navn: "Yushi Tanaka", raekke: "HS", pris: 11000000, point: 50, resultat: "1. runde" },
-            { id: 22, navn: "P. Teeraratsakul", raekke: "HS", pris: 10500000, point: 50, resultat: "1. runde" },
-            { id: 23, navn: "Lee Cheuk Yiu", raekke: "HS", pris: 10000000, point: 50, resultat: "1. runde" },
-            { id: 24, navn: "Lu Guang Zu", raekke: "HS", pris: 9500000, point: 50, resultat: "1. runde" },
-            { id: 25, navn: "Rasmus Gemke", raekke: "HS", pris: 9200000, point: 50, resultat: "1. runde" },
-            { id: 26, navn: "Leong Jun Hao", raekke: "HS", pris: 8900000, point: 50, resultat: "1. runde" },
-            { id: 27, navn: "Wang Zheng Xing", raekke: "HS", pris: 8600000, point: 50, resultat: "1. runde" },
-            { id: 28, navn: "Nhat Nguyen", raekke: "HS", pris: 8300000, point: 50, resultat: "1. runde" },
-            { id: 29, navn: "Jason Teh", raekke: "HS", pris: 8000000, point: 50, resultat: "1. runde" },
-            { id: 30, navn: "Brian Yang", raekke: "HS", pris: 7800000, point: 50, resultat: "1. runde" },
-            { id: 31, navn: "Yudai Okimoto", raekke: "HS", pris: 7500000, point: 50, resultat: "1. runde" },
-            { id: 32, navn: "Lee Chia Hao", raekke: "HS", pris: 7300000, point: 50, resultat: "1. runde" },
-            { id: 33, navn: "Arnaud Merkle", raekke: "HS", pris: 7100000, point: 50, resultat: "1. runde" },
-            { id: 34, navn: "Ng Ka Long Angus", raekke: "HS", pris: 6900000, point: 50, resultat: "1. runde" },
-            { id: 35, navn: "H. S. Prannoy", raekke: "HS", pris: 6700000, point: 50, resultat: "1. runde" },
-            { id: 36, navn: "M. Zaki Ubaidillah", raekke: "HS", pris: 6500000, point: 50, resultat: "1. runde" },
-            { id: 37, navn: "Kidambi Srikanth", raekke: "HS", pris: 6300000, point: 50, resultat: "1. runde" },
-            { id: 38, navn: "Wang Tzu Wei", raekke: "HS", pris: 6100000, point: 50, resultat: "1. runde" },
-            { id: 39, navn: "Jeon Hyeok Jin", raekke: "HS", pris: 5900000, point: 50, resultat: "1. runde" },
-            { id: 40, navn: "Magnus Johannesen", raekke: "HS", pris: 5700000, point: 50, resultat: "1. runde" },
-            { id: 41, navn: "Jason Gunawan", raekke: "HS", pris: 5500000, point: 50, resultat: "1. runde" },
-            { id: 42, navn: "P. Bagas Shujiwo", raekke: "HS", pris: 5300000, point: 50, resultat: "1. runde" },
-            { id: 43, navn: "Wang Po-Wei", raekke: "HS", pris: 5100000, point: 50, resultat: "1. runde" },
-            { id: 44, navn: "Anthony S. Ginting", raekke: "HS", pris: 4900000, point: 50, resultat: "1. runde" },
-            { id: 45, navn: "Tharun Mannepalli", raekke: "HS", pris: 4700000, point: 50, resultat: "1. runde" },
-            { id: 46, navn: "Su Li Yang", raekke: "HS", pris: 4500000, point: 50, resultat: "1. runde" },
-            { id: 47, navn: "Justin Hoh", raekke: "HS", pris: 4300000, point: 50, resultat: "1. runde" },
-            { id: 48, navn: "Kiran George", raekke: "HS", pris: 4100000, point: 50, resultat: "1. runde" },
-            { id: 49, navn: "Julien Carraggi", raekke: "HS", pris: 3900000, point: 50, resultat: "1. runde" },
-            { id: 50, navn: "Minoru Koga", raekke: "HS", pris: 3800000, point: 50, resultat: "1. runde" },
-            { id: 51, navn: "Muhamad Yusuf", raekke: "HS", pris: 3600000, point: 50, resultat: "1. runde" },
-            { id: 52, navn: "Hu Zhe An", raekke: "HS", pris: 3500000, point: 50, resultat: "1. runde" },
-            { id: 53, navn: "Kalle Koljonen", raekke: "HS", pris: 3400000, point: 50, resultat: "1. runde" },
-            { id: 54, navn: "Daniil Dubovenko", raekke: "HS", pris: 3300000, point: 50, resultat: "1. runde" },
-            { id: 55, navn: "Jonathan Matias", raekke: "HS", pris: 3200000, point: 50, resultat: "1. runde" },
-            { id: 56, navn: "Mithun Manjunath", raekke: "HS", pris: 3100000, point: 50, resultat: "1. runde" },
-            { id: 57, navn: "Aria Dinata", raekke: "HS", pris: 3000000, point: 50, resultat: "1. runde" },
-            { id: 58, navn: "Nguyen Hai Dang", raekke: "DS", pris: 2900000, point: 50, resultat: "1. runde" },
-            { id: 59, navn: "Liao Jhuo-Fu", raekke: "HS", pris: 2800000, point: 50, resultat: "1. runde" },
-            { id: 60, navn: "Zhu Xuan Chen", raekke: "HS", pris: 2700000, point: 50, resultat: "1. runde" },
-            { id: 61, navn: "Ditlev Jaeger Holm", raekke: "HS", pris: 2600000, point: 50, resultat: "1. runde" },
-            { id: 62, navn: "Harry Huang", raekke: "HS", pris: 2500000, point: 50, resultat: "1. runde" },
-            { id: 63, navn: "Lee Zii Jia", raekke: "HS", pris: 2400000, point: 50, resultat: "1. runde" },
-            { id: 64, navn: "Joakim Oldorff", raekke: "HS", pris: 2300000, point: 50, resultat: "1. runde" },
-            { id: 65, navn: "K. Wangcharoen", raekke: "HS", pris: 2200000, point: 50, resultat: "1. runde" },
-            { id: 66, navn: "Aidil Sholeh", raekke: "HS", pris: 2100000, point: 50, resultat: "1. runde" },
-            { id: 67, navn: "Saneeth Dayanand", raekke: "HS", pris: 2000000, point: 50, resultat: "1. runde" },
-            { id: 68, navn: "Wang Yu-Kai", raekke: "HS", pris: 1900000, point: 50, resultat: "1. runde" },
-            { id: 69, navn: "Richie D. Richardo", raekke: "HS", pris: 1800000, point: 50, resultat: "1. runde" },
-            { id: 70, navn: "Yoo Tae Bin", raekke: "HS", pris: 1700000, point: 50, resultat: "1. runde" },
-            { id: 71, navn: "Shogo Ogawa", raekke: "HS", pris: 1600000, point: 50, resultat: "1. runde" },
-            { id: 72, navn: "S.S.M. Subramanian", raekke: "HS", pris: 1500000, point: 50, resultat: "1. runde" },
-            { id: 73, navn: "Dong Tian Yao", raekke: "HS", pris: 1400000, point: 50, resultat: "1. runde" },
-            { id: 74, navn: "Riki Takei", raekke: "HS", pris: 1200000, point: 50, resultat: "1. runde" },
-            { id: 75, navn: "Misha Zilberman", raekke: "HS", pris: 1000000, point: 50, resultat: "1. runde" },
-            { id: 76, navn: "An Se Young", raekke: "DS", pris: 26000000, point: 1000, resultat: "Vinder" },
-            { id: 77, navn: "Wang Zhi Yi", raekke: "DS", pris: 24500000, point: 700, resultat: "Finale" },
-            { id: 78, navn: "Akane Yamaguchi", raekke: "DS", pris: 23500000, point: 500, resultat: "Semifinale" },
-            { id: 79, navn: "Chen Yu Fei", raekke: "DS", pris: 22500000, point: 500, resultat: "Semifinale" },
-            { id: 80, navn: "Han Yue", raekke: "DS", pris: 21500000, point: 300, resultat: "Kvartfinale" },
-            { id: 81, navn: "Putri Kusuma Wardani", raekke: "DS", pris: 20000000, point: 300, resultat: "Kvartfinale" },
-            { id: 82, navn: "Ratchanok Intanon", raekke: "DS", pris: 19000000, point: 300, resultat: "Kvartfinale" },
-            { id: 83, navn: "Pornpawee Chochuwong", raekke: "DS", pris: 18000000, point: 300, resultat: "Kvartfinale" },
-            { id: 84, navn: "Tomoka Miyazaki", raekke: "DS", pris: 17000000, point: 50, resultat: "1. runde" },
-            { id: 85, navn: "Michelle Li", raekke: "DS", pris: 16000000, point: 50, resultat: "1. runde" },
-            { id: 86, navn: "Pusarla V. Sindhu", raekke: "DS", pris: 15500000, point: 50, resultat: "1. runde" },
-            { id: 87, navn: "Nozomi Okuhara", raekke: "DS", pris: 15000000, point: 50, resultat: "1. runde" },
-            { id: 88, navn: "Chiu Pin-Chian", raekke: "DS", pris: 14500000, point: 50, resultat: "1. runde" },
-            { id: 89, navn: "Mia Blichfeldt", raekke: "DS", pris: 14000000, point: 50, resultat: "1. runde" },
-            { id: 90, navn: "Kim Ga Eun", raekke: "DS", pris: 13500000, point: 50, resultat: "1. runde" },
-            { id: 91, navn: "Lin Hsiang Ti", raekke: "DS", pris: 13000000, point: 50, resultat: "1. runde" },
-            { id: 92, navn: "Line Christophersen", raekke: "DS", pris: 12500000, point: 50, resultat: "1. runde" },
-            { id: 93, navn: "Busanan Ongbamrungphan", raekke: "DS", pris: 12000000, point: 50, resultat: "1. runde" },
-            { id: 94, navn: "Riko Gunji", raekke: "DS", pris: 11500000, point: 50, resultat: "1. runde" },
-            { id: 95, navn: "Line Højmark Kjaersfeldt", raekke: "DS", pris: 11000000, point: 50, resultat: "1. runde" },
-            { id: 96, navn: "Supanida Katethong", raekke: "DS", pris: 10500000, point: 50, resultat: "1. runde" },
-            { id: 97, navn: "Hina Akechi", raekke: "DS", pris: 10000000, point: 50, resultat: "1. runde" },
-            { id: 98, navn: "Unnati Hooda", raekke: "DS", pris: 9600000, point: 50, resultat: "1. runde" },
-            { id: 99, navn: "Pitchamon Opatniputh", raekke: "DS", pris: 9200000, point: 50, resultat: "1. runde" },
-            { id: 100, navn: "Thuy Linh Nguyen", raekke: "DS", pris: 8900000, point: 50, resultat: "1. runde" },
-            { id: 101, navn: "Gao Fang Jie", raekke: "DS", pris: 8600000, point: 50, resultat: "1. runde" },
-            { id: 102, navn: "Sim Yu Jin", raekke: "DS", pris: 8300000, point: 50, resultat: "1. runde" },
-            { id: 103, navn: "Tai Tzu Ying", raekke: "DS", pris: 8000000, point: 50, resultat: "1. runde" },
-            { id: 104, navn: "Sung Shuo Yun", raekke: "DS", pris: 7800000, point: 50, resultat: "1. runde" },
-            { id: 105, navn: "Natsuki Nidaira", raekke: "DS", pris: 7500000, point: 50, resultat: "1. runde" },
-            { id: 106, navn: "Wen Chi Hsu", raekke: "DS", pris: 7300000, point: 50, resultat: "1. runde" },
-            { id: 107, navn: "Lo Sin Yan Happy", raekke: "DS", pris: 7100000, point: 50, resultat: "1. runde" },
-            { id: 108, navn: "Malvika Bansod", raekke: "DS", pris: 6900000, point: 50, resultat: "1. runde" },
-            { id: 109, navn: "Asuka Takahashi", raekke: "DS", pris: 6700000, point: 50, resultat: "1. runde" },
-            { id: 110, navn: "Thet Htar Thuzar", raekke: "DS", pris: 6500000, point: 50, resultat: "1. runde" },
-            { id: 111, navn: "Aakarshi Kashyap", raekke: "DS", pris: 6300000, point: 50, resultat: "1. runde" },
-            { id: 112, navn: "Lauren Lam", raekke: "DS", pris: 6100000, point: 50, resultat: "1. runde" },
-            { id: 113, navn: "Qi Xuefei", raekke: "DS", pris: 5900000, point: 50, resultat: "1. runde" },
-            { id: 114, navn: "Kirsty Gilmour", raekke: "DS", pris: 5700000, point: 50, resultat: "1. runde" },
-            { id: 115, navn: "Neslihan Arin", raekke: "DS", pris: 5500000, point: 50, resultat: "1. runde" },
-            { id: 116, navn: "Lianne Tan", raekke: "DS", pris: 5300000, point: 50, resultat: "1. runde" },
-            { id: 117, navn: "Tanya Hemanth", raekke: "DS", pris: 5100000, point: 50, resultat: "1. runde" },
-            { id: 118, navn: "Huang Ching Ping", raekke: "DS", pris: 4900000, point: 49, resultat: "1. runde" },
-            { id: 119, navn: "Manami Suizu", raekke: "DS", pris: 4700000, point: 50, resultat: "1. runde" },
-            { id: 120, navn: "Lalinrat Chaiwan", raekke: "DS", pris: 4500000, point: 50, resultat: "1. runde" },
-            { id: 121, navn: "Letshanaa Karupathevan", raekke: "DS", pris: 4300000, point: 50, resultat: "1. runde" },
-            { id: 122, navn: "Goh Jin Wei", raekke: "DS", pris: 4100000, point: 50, resultat: "1. runde" },
-            { id: 123, navn: "Vivien Sandorhazi", raekke: "DS", pris: 3900000, point: 50, resultat: "1. runde" },
-            { id: 124, navn: "Clara Azurmendi", raekke: "DS", pris: 3800000, point: 50, resultat: "1. runde" },
-            { id: 125, navn: "Polina Buhrova", raekke: "DS", pris: 3600000, point: 50, resultat: "1. runde" },
-            { id: 126, navn: "Julie Dawall Jakobsen", raekke: "DS", pris: 3500000, point: 50, resultat: "1. runde" },
-            { id: 127, navn: "Komang Ayu Cahya Dewi", raekke: "DS", pris: 3400000, point: 50, resultat: "1. runde" },
-            { id: 128, navn: "Ester Nurumi T. Wardoyo", raekke: "DS", pris: 3300000, point: 50, resultat: "1. runde" },
-            { id: 129, navn: "Chuang Yi Ting", raekke: "DS", pris: 3200000, point: 50, resultat: "1. runde" },
-            { id: 130, navn: "Ines Castillo", raekke: "DS", pris: 3100000, point: 50, resultat: "1. runde" },
-            { id: 131, navn: "Rachael Darragh", raekke: "DS", pris: 3000000, point: 50, resultat: "1. runde" },
-            { id: 132, navn: "Keisha Fatima Azzahra", raekke: "DS", pris: 2900000, point: 50, resultat: "1. runde" },
-            { id: 133, navn: "Tereza Svabikova", raekke: "DS", pris: 2800000, point: 50, resultat: "1. runde" },
-            { id: 134, navn: "Wong Ling Ching", raekke: "DS", pris: 2700000, point: 50, resultat: "1. runde" },
-            { id: 135, navn: "Imaduddin Tasnim", raekke: "DS", pris: 2600000, point: 50, resultat: "1. runde" },
-            { id: 136, navn: "Amalie Schulz", raekke: "DS", pris: 2500000, point: 50, resultat: "1. runde" },
-            { id: 137, navn: "Frederikke Østergaard", raekke: "DS", pris: 2400000, point: 50, resultat: "1. runde" },
-            { id: 138, navn: "Agnes Korosi", raekke: "DS", pris: 2300000, point: 50, resultat: "1. runde" },
-            { id: 139, navn: "Hasanah Jinnantu", raekke: "DS", pris: 2200000, point: 50, resultat: "1. runde" },
-            { id: 140, navn: "Sofia Slosiarova", raekke: "DS", pris: 2100000, point: 50, resultat: "1. runde" },
-            { id: 141, fontName: "Kim Schmidt", raekke: "DS", pris: 2000000, point: 50, resultat: "1. runde" },
-            { id: 142, navn: "Rachel Chan", raekke: "DS", pris: 1900000, point: 50, resultat: "1. runde" },
-            { id: 143, navn: "Hina Akechi", raekke: "DS", pris: 1800000, point: 50, resultat: "1. runde" },
-            { id: 144, navn: "Insyirah Khan", raekke: "DS", pris: 1700000, point: 50, resultat: "1. runde" },
-            { id: 145, navn: "Kisona Selvaduray", raekke: "DS", pris: 1600000, point: 50, resultat: "1. runde" },
-            { id: 146, navn: "Siti Nurshuhaini", raekke: "DS", pris: 1500000, point: 50, resultat: "1. runde" },
-            { id: 147, navn: "Guzman Sabrina", raekke: "DS", pris: 1400000, point: 50, resultat: "1. runde" },
-            { id: 148, navn: "Romero Jaymie", raekke: "DS", pris: 1200000, point: 50, resultat: "1. runde" },
-            { id: 149, navn: "Ksenia Polikarpova", raekke: "DS", pris: 1000000, point: 50, resultat: "1. runde" },
-            { id: 150, navn: "Hana Ramadhini", raekke: "DS", pris: 800000, point: 50, resultat: "1. runde" }
-        ];
-
         const turneringer = [
-            { id: "5649", navn: "Singapore Open (S750)", dato: "26.-31. Maj 2026" },    
-            { id: "china2026", navn: "China Masters (S750)", dato: "1.-6. Sept 2026" },
-            { id: "korea2026", navn: "Korea Open (S500)", dato: "8.-13. Sept 2026" },
-            { id: "arctic2026", navn: "Arctic Open (S500)", dato: "6.-11. Okt 2026" },
-            { id: "denmark2026", navn: "Denmark Open (S750)", dato: "13.-18. Okt 2026" }
+            { id: "t01", navn: "China Masters (Super 750)", dato: "01.-06. September 2026" },
+            { id: "t02", navn: "Indonesia Masters I (Super 100)", dato: "01.-06. September 2026" },
+            { id: "t03", navn: "Korea Open (Super 500)", dato: "08.-13. September 2026" },
+            { id: "t04", navn: "Vietnam Open (Super 100)", dato: "08.-13. September 2026" },
+            { id: "t05", navn: "Abu Dhabi Masters (Super 100)", dato: "29. Sept - 04. Okt 2026" },
+            { id: "t06", navn: "Arctic Open (Super 500)", dato: "06.-11. Oktober 2026" },
+            { id: "t07", navn: "Denmark Open (Super 750)", dato: "13.-18. Oktober 2026" },
+            { id: "t08", navn: "Malaysia Super 100 (Super 100)", dato: "13.-18. Oktober 2026" },
+            { id: "t09", navn: "French Open (Super 750)", dato: "20.-25. Oktober 2026" },
+            { id: "t10", navn: "Indonesia Masters II (Super 100)", dato: "20.-25. Oktober 2026" },
+            { id: "t11", navn: "Hylo Open (Super 500)", dato: "27. Okt - 01. Nov 2026" },
+            { id: "t12", navn: "Korea Masters (Super 300)", dato: "03.-08. November 2026" },
+            { id: "t13", navn: "Kumamoto Japan Masters (Super 500)", dato: "10.-15. November 2026" },
+            { id: "t_kao", navn: "VICTOR Kaohsiung Masters 2026 (Super 100)", dato: "10.-15. November 2026" },
+            { id: "t14", navn: "Hong Kong Open (Super 500)", dato: "17.-22. November 2026" },
+            { id: "t15", navn: "Syed Modi India Open (Super 300)", dato: "24.-29. November 2026" },
+            { id: "t16", navn: "Guwahati Masters (Super 100)", dato: "December 2026" },
+            { id: "t17", navn: "Odisha Masters (Super 100)", dato: "December 2026" },
+            { id: "t18", navn: "BWF World Tour Finals", dato: "09.-13. December 2026" }
         ];
 
-        // 🧠 HUKOMMELSE: DETEKTERER LOGIN VED UPDATE
+        const pointModelB = {
+            "Winner": 1000,
+            "Runner-up": 700,
+            "Semi-finalist": 500,
+            "Quarter-finalist": 300,
+            "Round of 16": 150,
+            "Round of 32": 75
+        };
+
+        let spillere = [
+            { id: 1, navn: "Shi Yu Qi", raekke: "HS", pris: 26000000 }, { id: 2, navn: "Kunlavut Vitidsarn", raekke: "HS", pris: 24500000 },
+            { id: 3, navn: "Anders Antonsen", raekke: "HS", pris: 23500000 }, { id: 4, navn: "Christo Popov", raekke: "HS", pris: 22000000 },
+            { id: 5, navn: "Jonatan Christie", raekke: "HS", pris: 21500000 }, { id: 6, navn: "Chou Tien Chen", raekke: "HS", pris: 21000000 },
+            { id: 7, navn: "Li Shi Feng", raekke: "HS", pris: 20000000 }, { id: 8, navn: "Lin Chun-Yi", raekke: "HS", pris: 18000000 },
+            { id: 9, navn: "Alex Lanier", raekke: "HS", pris: 17000000 }, { id: 10, navn: "Lakshya Sen", raekke: "HS", pris: 16500000 },
+            { id: 11, navn: "Kodai Naraoka", raekke: "HS", pris: 16000000 }, { id: 12, navn: "Victor Lai", raekke: "HS", pris: 15500000 },
+            { id: 13, navn: "Alwi Farhan", raekke: "HS", pris: 15000000 }, { id: 14, navn: "Loh Kean Yew", raekke: "HS", pris: 14500000 },
+            { id: 15, navn: "Weng Hong Yang", raekke: "HS", pris: 14000000 }, { id: 16, navn: "Toma Junior Popov", raekke: "HS", pris: 13500000 },
+            { id: 17, navn: "Kenta Nishimoto", raekke: "HS", pris: 13000000 }, { id: 18, navn: "Chi Yu Jen", raekke: "HS", pris: 12500000 },
+            { id: 19, navn: "Koki Watanabe", raekke: "HS", pris: 12000000 }, { id: 20, navn: "Ayush Shetty", raekke: "HS", pris: 11500000 },
+            { id: 21, navn: "Yushi Tanaka", raekke: "HS", pris: 11000000 }, { id: 22, navn: "P. Teeraratsakul", raekke: "HS", pris: 10500000 },
+            { id: 23, navn: "Lee Cheuk Yiu", raekke: "HS", pris: 10000000 }, { id: 24, navn: "Lu Guang Zu", raekke: "HS", pris: 9500000 },
+            { id: 25, navn: "Rasmus Gemke", raekke: "HS", pris: 9000000 }, { id: 26, navn: "Leong Jun Hao", raekke: "HS", pris: 8500000 },
+            { id: 27, navn: "Wang Zheng Xing", raekke: "HS", pris: 8000000 }, { id: 28, navn: "Nhat Nguyen", raekke: "HS", pris: 7500000 },
+            { id: 29, navn: "Jason Teh", raekke: "HS", pris: 7000000 }, { id: 30, navn: "Brian Yang", raekke: "HS", pris: 6500000 },
+            { id: 31, navn: "Yudai Okimoto", raekke: "HS", pris: 6000000 }, { id: 32, navn: "Lee Chia Hao", raekke: "HS", pris: 5500000 },
+            { id: 33, navn: "Arnaud Merkle", raekke: "HS", pris: 5000000 }, { id: 34, navn: "Ng Ka Long Angus", raekke: "HS", pris: 4800000 },
+            { id: 35, navn: "H. S. Prannoy", raekke: "HS", pris: 4600000 }, { id: 36, navn: "M. Zaki Ubaidillah", raekke: "HS", pris: 4400000 },
+            { id: 37, navn: "Kidambi Srikanth", raekke: "HS", pris: 4200000 }, { id: 38, navn: "Wang Tzu Wei", raekke: "HS", pris: 4000000 },
+            { id: 39, navn: "Jeon Hyeok Jin", raekke: "HS", pris: 3800000 }, { id: 40, navn: "Magnus Johannesen", raekke: "HS", pris: 3600000 },
+            { id: 41, navn: "Jason Gunawan", raekke: "HS", pris: 3400000 }, { id: 42, navn: "P. Bagas Shujiwo", raekke: "HS", pris: 3200000 },
+            { id: 43, navn: "Wang Po-Wei", raekke: "HS", pris: 3000000 }, { id: 44, navn: "Anthony S. Ginting", raekke: "HS", pris: 2800000 },
+            { id: 45, navn: "Tharun Mannepalli", raekke: "HS", pris: 2600000 }, { id: 46, navn: "Su Li Yang", raekke: "HS", pris: 2400000 },
+            { id: 47, navn: "Justin Hoh", raekke: "HS", pris: 2200000 }, { id: 48, navn: "Kiran George", raekke: "HS", pris: 2000000 },
+            { id: 49, navn: "Julien Carraggi", raekke: "HS", pris: 1800000 }, { id: 50, navn: "Minoru Koga", raekke: "HS", pris: 1600000 },
+            { id: 51, navn: "Muhamad Yusuf", raekke: "HS", pris: 1500000 }, { id: 52, navn: "Hu Zhe An", raekke: "HS", pris: 1400000 },
+            { id: 53, navn: "Kalle Koljonen", raekke: "HS", pris: 1300000 }, { id: 54, navn: "Daniil Dubovenko", raekke: "HS", pris: 1200000 },
+            { id: 55, navn: "Jonathan Matias", raekke: "HS", pris: 1100000 }, { id: 56, navn: "Mithun Manjunath", raekke: "HS", pris: 1000000 },
+            { id: 57, navn: "Aria Dinata", raekke: "HS", pris: 900000 }, { id: 58, navn: "Nguyen Hai Dang", raekke: "HS", pris: 900000 },
+            { id: 59, navn: "Liao Jhuo-Fu", raekke: "HS", pris: 800000 }, { id: 60, navn: "Zhu Xuan Chen", raekke: "HS", pris: 750000 },
+            { id: 61, navn: "Ditlev Jaeger Holm", raekke: "HS", pris: 700000 }, { id: 62, navn: "Harry Huang", raekke: "HS", pris: 650000 },
+            { id: 63, navn: "Lee Zii Jia", raekke: "HS", pris: 600000 }, { id: 64, navn: "Joakim Oldorff", raekke: "HS", pris: 550000 },
+            { id: 65, navn: "K. Wangcharoen", raekke: "HS", pris: 500000 }, { id: 66, navn: "Aidil Sholeh", raekke: "HS", pris: 450000 },
+            { id: 67, navn: "Saneeth Dayanand", raekke: "HS", pris: 400000 }, { id: 68, navn: "Wang Yu-Kai", raekke: "HS", pris: 350000 },
+            { id: 69, navn: "Richie D. Richardo", raekke: "HS", pris: 300000 }, { id: 70, navn: "Yoo Tae Bin", raekke: "HS", pris: 250000 },
+            { id: 71, navn: "Shogo Ogawa", raekke: "HS", pris: 200000 }, { id: 72, navn: "S.S.M. Subramanian", raekke: "HS", pris: 150000 },
+            { id: 73, navn: "Dong Tian Yao", raekke: "HS", pris: 100000 }, { id: 74, navn: "Riki Takei", raekke: "HS", pris: 800000 },
+            { id: 75, navn: "Misha Zilberman", raekke: "HS", pris: 50000 },
+            
+            // DAMESINGLE (DS)
+            { id: 76, navn: "An Se Young", raekke: "DS", pris: 26000000 }, { id: 77, navn: "Wang Zhi Yi", raekke: "DS", pris: 24500000 },
+            { id: 78, navn: "Akane Yamaguchi", raekke: "DS", pris: 23500000 }, { id: 79, navn: "Chen Yu Fei", raekke: "DS", pris: 22000000 },
+            { id: 80, navn: "Han Yue", raekke: "DS", pris: 21500000 }, { id: 81, navn: "Putri Kusuma Wardani", raekke: "DS", pris: 21000000 },
+            { id: 82, navn: "Ratchanok Intanon", raekke: "DS", pris: 20000000 }, { id: 83, navn: "Pornpawee Chochuwong", raekke: "DS", pris: 18000000 },
+            { id: 84, navn: "Tomoka Miyazaki", raekke: "DS", pris: 17000000 }, { id: 85, navn: "Michelle Li", raekke: "DS", pris: 16500000 },
+            { id: 86, navn: "Pusarla V. Sindhu", raekke: "DS", pris: 16000000 }, { id: 87, navn: "Nozomi Okuhara", raekke: "DS", pris: 15500000 },
+            { id: 88, navn: "Chiu Pin-Chian", raekke: "DS", pris: 15000000 }, { id: 89, navn: "Mia Blichfeldt", raekke: "DS", pris: 14500000 },
+            { id: 90, navn: "Kim Ga Eun", raekke: "DS", pris: 14000000 }, { id: 91, navn: "Lin Hsiang Ti", raekke: "DS", pris: 13500000 },
+            { id: 92, navn: "Line Christophersen", raekke: "DS", pris: 13000000 }, { id: 93, navn: "Busanan Ongbamrungphan", raekke: "DS", pris: 12500000 },
+            { id: 94, navn: "Riko Gunji", raekke: "DS", pris: 12000000 }, { id: 95, navn: "Line Højmark Kjaersfeldt", raekke: "DS", pris: 11500000 },
+            { id: 96, navn: "Supanida Katethong", raekke: "DS", pris: 11000000 }, { id: 97, navn: "Hina Akechi", raekke: "DS", pris: 10500000 },
+            { id: 98, navn: "Unnati Hooda", raekke: "DS", pris: 10000000 }, { id: 99, navn: "Pitchamon Opatniputh", raekke: "DS", pris: 9500000 },
+            { id: 100, navn: "Thuy Linh Nguyen", raekke: "DS", pris: 9000000 }, { id: 101, navn: "Gao Fang Jie", raekke: "DS", pris: 8500000 },
+            { id: 102, navn: "Sim Yu Jin", raekke: "DS", pris: 8000000 }, { id: 103, navn: "Tai Tzu Ying", raekke: "DS", pris: 7500000 },
+            { id: 104, navn: "Sung Shuo Yun", raekke: "DS", pris: 7000000 }, { id: 105, navn: "Natsuki Nidaira", raekke: "DS", pris: 6500000 },
+            { id: 106, navn: "Wen Chi Hsu", raekke: "DS", pris: 6000000 }, { id: 107, navn: "Lo Sin Yan Happy", raekke: "DS", pris: 5500000 },
+            { id: 108, navn: "Malvika Bansod", raekke: "DS", pris: 5000000 }, { id: 109, navn: "Asuka Takahashi", raekke: "DS", pris: 4800000 },
+            { id: 110, navn: "Thet Htar Thuzar", raekke: "DS", pris: 4600000 }, { id: 111, navn: "Aakarshi Kashyap", raekke: "DS", pris: 4400000 },
+            { id: 112, navn: "Lauren Lam", raekke: "DS", pris: 4200000 }, { id: 113, navn: "Qi Xuefei", raekke: "DS", pris: 4000000 },
+            { id: 114, navn: "Kirsty Gilmour", raekke: "DS", pris: 3800000 }, { id: 115, navn: "Neslihan Arin", raekke: "DS", pris: 3600000 },
+            { id: 116, navn: "Lianne Tan", raekke: "DS", pris: 3400000 }, { id: 117, navn: "Tanya Hemanth", raekke: "DS", pris: 3200000 },
+            { id: 118, navn: "Huang Ching Ping", raekke: "DS", pris: 3000000 }, { id: 119, navn: "Manami Suizu", raekke: "DS", pris: 2800000 },
+            { id: 120, navn: "Lalinrat Chaiwan", raekke: "DS", pris: 2600000 }, { id: 121, navn: "Letshanaa Karupathevan", raekke: "DS", pris: 2400000 },
+            { id: 122, navn: "Goh Jin Wei", raekke: "DS", pris: 2200000 }, { id: 123, navn: "Vivien Sandorhazi", raekke: "DS", pris: 2000000 },
+            { id: 124, navn: "Clara Azurmendi", raekke: "DS", pris: 1800000 }, { id: 125, navn: "Polina Buhrova", raekke: "DS", pris: 1600000 },
+            { id: 126, navn: "Julie Dawall Jakobsen", raekke: "DS", pris: 1500000 }, { id: 127, navn: "Komang Ayu Cahya Dewi", raekke: "DS", pris: 1400000 },
+            { id: 128, navn: "Ester Nurumi T. Wardoyo", raekke: "DS", pris: 1300000 }, { id: 129, navn: "Chuang Yi Ting", raekke: "DS", pris: 1200000 },
+            { id: 130, navn: "Ines Castillo", raekke: "DS", pris: 1100000 }, { id: 131, navn: "Rachael Darragh", raekke: "DS", pris: 1000000 },
+            { id: 132, navn: "Keisha Fatima Azzahra", raekke: "DS", pris: 900000 }, { id: 133, navn: "Tereza Svabikova", raekke: "DS", pris: 800000 },
+            { id: 134, navn: "Wong Ling Ching", raekke: "DS", pris: 750000 }, { id: 135, navn: "Imaduddin Tasnim", raekke: "DS", pris: 700000 },
+            { id: 136, navn: "Amalie Schulz", raekke: "DS", pris: 650000 }, { id: 137, navn: "Frederikke Østergaard", raekke: "DS", pris: 600000 },
+            { id: 138, navn: "Agnes Korosi", raekke: "DS", pris: 550000 }, { id: 139, navn: "Hasanah Jinnantu", raekke: "DS", pris: 500000 },
+            { id: 140, navn: "Sofia Slosiarova", raekke: "DS", pris: 450000 }, 
+            { id: 141, navn: "Kim Schmidt", raekke: "DS", pris: 400000 }, { id: 142, navn: "Rachel Chan", raekke: "DS", pris: 350000 },
+            { id: 144, navn: "Insyirah Khan", raekke: "DS", pris: 300000 }, { id: 145, navn: "Kisona Selvaduray", raekke: "DS", pris: 250000 },
+            { id: 146, navn: "Siti Nurshuhaini", raekke: "DS", pris: 200000 }, { id: 147, navn: "Guzman Sabrina", raekke: "DS", pris: 150000 },
+            { id: 148, navn: "Romero Jaymie", raekke: "DS", pris: 100000 }, { id: 149, navn: "Ksenia Polikarpova", raekke: "DS", pris: 80000 },
+            { id: 150, navn: "Hana Ramadhini", raekke: "DS", pris: 50000 }
+        ];
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 nuvaerendeUid = user.uid;
-                const userRef = ref(db, `managere/${nuvaerendeUid}`);
-                const userSnap = await get(userRef);
+                const userSnap = await get(ref(db, `managere/${nuvaerendeUid}`));
                 if (userSnap.exists()) {
                     nuvaerendeManager = userSnap.val().navn;
                     document.getElementById('current-user-display').innerText = nuvaerendeManager;
                     document.getElementById('login-screen').style.display = 'none';
+                    
+                    if(user.email === "admin@liga.dk" || user.email === "kasper@liga.dk") {
+                        document.getElementById('admin-panel-section').style.display = 'block';
+                        bygAdminDropdowns();
+                    } else {
+                        document.getElementById('admin-panel-section').style.display = 'none';
+                    }
                     opdaterSkaerm();
                 }
-            } else {
-                document.getElementById('login-screen').style.display = 'flex';
+            } else { 
+                document.getElementById('login-screen').style.display = 'flex'; 
+                document.getElementById('admin-panel-section').style.display = 'none';
             }
         });
 
-        // UI NOTIFIKATIONER
+        onValue(ref(db, "dynamiske_spillere"), (snapshot) => {
+            if(snapshot.exists()) {
+                const livePriser = snapshot.val();
+                spillere.forEach(s => {
+                    if(livePriser[s.id]) { s.pris = livePriser[s.id]; }
+                });
+                opdaterSkaerm();
+            }
+        });
+
+        window.logUd = async function() {
+            try {
+                await signOut(auth);
+                nuvaerendeManager = ""; nuvaerendeUid = ""; mitHold = [];
+                document.getElementById('current-user-display').innerText = "Logget ud";
+                visBesked("Du er nu logget ud!");
+            } catch (e) { alert("Fejl under log ud: " + e.message); }
+        };
+
         window.visBesked = function(tekst, type = "succes") {
             const toast = document.getElementById('toast-notification');
-            const msg = document.getElementById('toast-message');
-            const icon = document.getElementById('toast-icon');
-            
-            msg.innerText = tekst;
-            if(type === "fejl") {
-                toast.style.borderLeftColor = "var(--accent-red)";
-                icon.innerText = "❌";
-            } else {
-                toast.style.borderLeftColor = "var(--accent)";
-                icon.innerText = "🟢";
-            }
-            
+            document.getElementById('toast-message').innerText = tekst;
+            document.getElementById('toast-icon').innerText = type === "fejl" ? "❌" : "🟢";
+            toast.style.borderLeftColor = type === "fejl" ? "var(--accent-red)" : "var(--accent)";
             toast.style.top = "20px";
             setTimeout(() => { toast.style.top = "-100px"; }, 3500);
         };
 
-        // LOGIN SYSTEM
         window.login = async function() {
             const email = document.getElementById('email-input').value.trim();
             const password = document.getElementById('password-input').value.trim();
-
-            if (!email || !password) return alert("Indtast venligst både e-mail og password!");
-
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                nuvaerendeUid = userCredential.user.uid;
-                
-                const userRef = ref(db, `managere/${nuvaerendeUid}`);
-                const userSnap = await get(userRef);
-                nuvaerendeManager = userSnap.val().navn;
-
-                afslutLogin();
-                visBesked(`Velkommen tilbage, ${nuvaerendeManager}! 🔥`);
-            } catch (error) {
-                if (error.code === "auth/user-not-found" || error.code === "auth/invalid-credential") {
-                    alert("Forkert login! Hvis du er ny, skal du klikke på 'Opret Ny Manager Profil' knappen i stedet.");
-                } else {
-                    alert("Fejl: " + error.message);
-                }
-            }
+            if (!email || !password) return alert("Udfyld venligst felterne!");
+            try { await signInWithEmailAndPassword(auth, email, password); } catch (e) { alert("Fejl: " + e.message); }
         };
 
-        // PROFILOPRETTELSE
         window.opretProfil = async function() {
-            const managerNavn = document.getElementById('username-input').value.trim();
+            const navn = document.getElementById('username-input').value.trim();
             const email = document.getElementById('email-input').value.trim();
             const password = document.getElementById('password-input').value.trim();
-
-            if (!managerNavn || !email || !password) {
-                return alert("Fejl: Du SKAL udfylde både Manager-navn, E-mail og Password for at oprette dig!");
-            }
-            if (password.length < 6) return alert("Password skal være på mindst 6 tegn!");
-
+            if (!navn || !email || !password) return alert("Udfyld alt!");
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                nuvaerendeUid = userCredential.user.uid;
-                nuvaerendeManager = managerNavn;
-
-                await set(ref(db, `managere/${nuvaerendeUid}`), {
-                    uid: nuvaerendeUid,
-                    navn: nuvaerendeManager,
-                    budget: 50000000,
-                    hold: [],
-                    point: 0
-                });
-
-                afslutLogin();
-                visBesked(`Profil oprettet! Velkommen til ligaen, ${nuvaerendeManager}! 🏆`);
-            } catch (error) {
-                alert("Kunne ikke oprette profil: " + error.message);
-            }
+                const creds = await createUserWithEmailAndPassword(auth, email, password);
+                await set(ref(db, `managere/${creds.user.uid}`), { uid: creds.user.uid, navn, budget: 50000000, hold: [], point: 0 });
+            } catch (e) { alert("Fejl: " + e.message); }
         };
 
-        function afslutLogin() {
-            document.getElementById('current-user-display').innerText = nuvaerendeManager;
-            document.getElementById('login-screen').style.display = 'none';
-            opdaterSkaerm();
-        }
-
-        // DESIGN-GENERATOR (SKÆRMTEGNING)
         window.opdaterSkaerm = function() {
             document.getElementById('window-status-text').innerText = vinduesTekst;
-
-            if (!nuvaerendeManager) {
-                const lbContainer = document.getElementById('leaderboard-container');
-                if (lbContainer) {
-                    managere.sort((a,b) => b.point - a.point);
-                    lbContainer.innerHTML = managere.map((m, idx) => `
-                        <tr class="clickable-row" onclick="spionerManager('${m.uid}')">
-                            <td><strong>#${idx+1}</strong></td>
-                            <td>👤 ${m.navn}</td>
-                            <td style="color:var(--accent); font-weight:bold;">${(m.point || 0).toLocaleString('da-DK')} p</td>
-                        </tr>
-                    `).join('');
-                }
-                return;
-            }
+            if (!nuvaerendeManager) return;
 
             document.getElementById('budget-display').innerText = budget.toLocaleString('da-DK');
             document.getElementById('team-count').innerText = mitHold.length;
+            document.getElementById('req-hs').innerText = mitHold.filter(s => s.raekke === 'HS').length;
+            document.getElementById('req-ds').innerText = mitHold.filter(s => s.raekke === 'DS').length;
 
-            const antalHS = mitHold.filter(s => s.raekke === 'HS').length;
-            const antalDS = mitHold.filter(s => s.raekke === 'DS').length;
-            document.getElementById('req-hs').innerText = antalHS;
-            document.getElementById('req-ds').innerText = antalDS;
-
-            // Tegn markedet
             const marketContainer = document.getElementById('market-container');
-            const filtreredeSpillere = spillere.filter(s => s.raekke === aktivRaekke);
-            filtreredeSpillere.sort((a, b) => b.pris - a.pris);
+            const filtrerede = spillere.filter(s => s.raekke === aktivRaekke).sort((a,b) => b.pris - a.pris);
             
-            marketContainer.innerHTML = filtreredeSpillere.map((spiller, index) => {
+            marketContainer.innerHTML = filtrerede.map((spiller, index) => {
                 const ejer = mitHold.some(p => p.id === spiller.id);
-                // 🔒 SIKKERHEDSLÅSE: Deaktiver knappen hvis du ikke har råd eller vinduet er LÅST
                 const harIkkeRaad = !ejer && budget < spiller.pris;
-                const vindueLukket = !erMandag;
-                const isDisabled = (vindueLukket) || (harIkkeRaad);
-
                 return `
                     <div class="player-card">
                         <div>
                             <div style="font-size:0.8em; color:var(--text-muted);">Rang #${index + 1}</div>
                             <div style="font-size:1.05em; font-weight:bold; margin:3px 0;">${spiller.navn}</div>
-                            <div style="color:var(--accent); font-weight:bold; font-size:1em;">${spiller.pris.toLocaleString('da-DK')} DKK</div>
+                            <div style="color:var(--accent); font-weight:bold;">${spiller.pris.toLocaleString('da-DK')} DKK</div>
                         </div>
-                        <button class="btn ${ejer ? 'owned' : ''}" style="margin-top:10px;" onclick="haandterKnapKlik(${spiller.id}, ${ejer})" ${isDisabled ? 'disabled' : ''}>
+                        <button class="btn ${ejer ? 'owned' : ''}" style="margin-top:10px;" onclick="haandterKnapKlik(${spiller.id}, ${ejer})" ${(harIkkeRaad && !ejer) || !erMandag ? 'disabled' : ''}>
                             ${ejer ? 'På holdet ✔' : harIkkeRaad ? 'For dyr 💰' : 'Køb'}
                         </button>
                     </div>
                 `;
             }).join('');
 
-            // Tegn holdlisten
-            const teamContainer = document.getElementById('my-team-container');
-            teamContainer.innerHTML = mitHold.length === 0 ? '<li style="color:var(--text-muted)">Ingen spillere valgt</li>' : 
-                mitHold.map(s => `
-                    <li style="background:#111827; padding:10px; margin-bottom:5px; border-radius:6px; display:flex; justify-content:space-between; align-items:center;">
-                        <span>🏸 ${s.navn} (${s.raekke})</span>
-                        <span style="color:var(--accent-red); cursor:pointer; font-weight:bold; font-size:0.9em; ${!erMandag ? 'display:none;' : ''}" onclick="saelgSpiller(${s.id})">Sælg</span>
-                    </li>
-                `).join('');
+            document.getElementById('my-team-container').innerHTML = mitHold.length === 0 ? '<li style="color:var(--text-muted)">Intakt</li>' : 
+                mitHold.map(s => `<li style="background:#111827; padding:10px; margin-bottom:5px; border-radius:6px; display:flex; justify-content:space-between;"><span>🏸 ${s.navn}</span><span style="color:var(--accent-red); cursor:pointer; font-weight:bold; ${!erMandag ? 'display:none;' : ''}" onclick="saelgSpiller(${s.id})">Sælg</span></li>`).join('');
 
-            // Leaderboard
-            const lbContainer = document.getElementById('leaderboard-container');
-            if (lbContainer) {
-                managere.sort((a,b) => b.point - a.point);
-                lbContainer.innerHTML = managere.map((m, idx) => `
-                    <tr class="clickable-row" onclick="spionerManager('${m.uid}')">
-                        <td><strong>#${idx+1}</strong></td>
-                        <td>👤 ${m.navn}</td>
-                        <td style="color:var(--accent); font-weight:bold;">${(m.point || 0).toLocaleString('da-DK')} p</td>
-                    </tr>
-                `).join('');
-            }
+            managere.sort((a,b) => b.point - a.point);
+            document.getElementById('leaderboard-container').innerHTML = managere.map((m, idx) => `<tr class="clickable-row" onclick="spionerManager('${m.uid}')"><td><strong>#${idx+1}</strong></td><td>👤 ${m.navn}</td><td style="color:var(--accent); font-weight:bold;">${(m.point || 0).toLocaleString('da-DK')} p</td></tr>`).join('');
 
-            // Turneringsliste
             document.getElementById('tournament-history-container').innerHTML = turneringer.map(t => `
                 <div class="tournament-badge" onclick="visTurnering('${t.id}', '${t.navn}')">
-                    <div style="font-weight:bold; color:var(--accent-blue); font-size:0.9em;">${t.navn}</div>
-                    <div style="font-size:0.8em; color:var(--text-muted); font-weight:bold;">${t.dato}</div>
+                    <div style="font-weight:bold; color:var(--accent-blue);">${t.navn}</div>
+                    <div style="font-size:0.8em; color:var(--text-muted); margin-top:5px;">${t.dato}</div>
                 </div>
             `).join('');
         };
 
-        window.skiftRaekke = function(raekke) {
-            aktivRaekke = raekke;
-            document.getElementById('btn-hs').classList.toggle('active', raekke === 'HS');
-            document.getElementById('btn-ds').classList.toggle('active', raekke === 'DS');
-            opdaterSkaerm();
-        };
+        function bygAdminDropdowns() {
+            const adminHsContainer = document.getElementById('admin-hs-inputs');
+            const adminDsContainer = document.getElementById('admin-ds-inputs');
 
-        // KNASTRREGEN FUNKTION: HÅNDTERER BÅDE KØB OG AFVALG PÅ SAMME KNAP
-        window.haandterKnapKlik = function(id, ejer) {
-            if(!erMandag) return visBesked("Transfervinduet er lukket! Du kan kun handle om mandagen.", "fejl");
-            if (ejer) { window.saelgSpiller(id); } else { window.koebSpiller(id); }
-        };
+            const hsSpillere = spillere.filter(s => s.raekke === 'HS').sort((a,b) => a.navn.localeCompare(b.navn));
+            const dsSpillere = spillere.filter(s => s.raekke === 'DS').sort((a,b) => a.navn.localeCompare(b.navn));
 
-        // INDKØB MED SIKKERHEDSLÅSE
-        window.koebSpiller = async function(id) {
-            if(!nuvaerendeUid) return;
-            const spiller = spillere.find(p => p.id === id);
-            if (!spiller) return;
+            let opsaetning = [
+                { runde: "Winner", antal: 1, label: "Winner 🥇" },
+                { runde: "Runner-up", antal: 1, label: "Runner-up 🥈" },
+                { runde: "Semi-finalist", antal: 2, label: "Semi-finalist 🥉" },
+                { runde: "Quarter-finalist", antal: 4, label: "Quarter-finalist" },
+                { runde: "Round of 16", antal: 8, label: "Round of 16" },
+                { runde: "Round of 32", antal: 16, label: "Round of 32" }
+            ];
 
-            const nuvaerendeAntalIRaekke = mitHold.filter(s => s.raekke === spiller.raekke).length;
-
-            if (spiller.raekke === 'HS' && nuvaerendeAntalIRaekke >= 4) return visBesked(`Holdet er fyldt! Du kan højst have 4 Herresingler.`, "fejl");
-            if (spiller.raekke === 'DS' && nuvaerendeAntalIRaekke >= 2) return visBesked(`Holdet er fyldt! Du kan højst have 2 Damesingler.`, "fejl");
-            if (mitHold.length >= 6) return visBesked(`Dit hold er helt fuldt (Maks 6 spillere totalt)!`, "fejl");
-
-            const nyeIder = mitHold.map(p => p.id);
-            nyeIder.push(id);
-            const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
-
-            await set(ref(db, `managere/${nuvaerendeUid}`), {
-                uid: nuvaerendeUid,
-                navn: nuvaerendeManager,
-                budget: budget - spiller.pris,
-                hold: nyeIder,
-                point: minProfilData.point || 0
+            let hsHtml = `<div class="column-title">Herresingle (HS) Placeringer</div><div class="admin-scroll-box">`;
+            let hsCounter = 0;
+            opsaetning.forEach(o => {
+                for(let i = 1; i <= o.antal; i++) {
+                    let visningstext = o.antal > 1 ? `${o.label} (${i})` : o.label;
+                    hsHtml += `
+                        <div class="admin-row">
+                            <span>${visningstext}</span>
+                            <select class="admin-select hs-admin-input" id="admin-hs-input-${hsCounter}" data-runde="${o.runde}">
+                                <option value="">-- Vælg spiller --</option>
+                                ${hsSpillere.map(s => `<option value="${s.id}">${s.navn}</option>`).join('')}
+                            </select>
+                        </div>`;
+                    hsCounter++;
+                }
             });
-            visBesked(`Købt: ${spiller.navn}!`);
-        };
+            hsHtml += `</div>`;
+            adminHsContainer.innerHTML = hsHtml;
 
-        // SALG AF SPILLERE
-        window.saelgSpiller = async function(id) {
-            if(!nuvaerendeUid) return;
-            const spiller = spillere.find(p => p.id === id);
-            const nyeIder = mitHold.filter(p => p.id !== id).map(p => p.id);
-            const minProfilData = managere.find(m => m.uid === nuvaerendeUid) || {};
-
-            await set(ref(db, `managere/${nuvaerendeUid}`), {
-                uid: nuvaerendeUid,
-                navn: nuvaerendeManager,
-                budget: budget + spiller.pris,
-                hold: nyeIder,
-                point: minProfilData.point || 0
+            let dsHtml = `<div class="column-title">Damesingle (DS) Placeringer</div><div class="admin-scroll-box">`;
+            let dsCounter = 0;
+            opsaetning.forEach(o => {
+                for(let i = 1; i <= o.antal; i++) {
+                    let visningstext = o.antal > 1 ? `${o.label} (${i})` : o.label;
+                    dsHtml += `
+                        <div class="admin-row">
+                            <span>${visningstext}</span>
+                            <select class="admin-select ds-admin-input" id="admin-ds-input-${dsCounter}" data-runde="${o.runde}">
+                                <option value="">-- Vælg spiller --</option>
+                                ${dsSpillere.map(s => `<option value="${s.id}">${s.navn}</option>`).join('')}
+                            </select>
+                        </div>`;
+                    dsCounter++;
+                }
             });
-            visBesked(`Fjernet: ${spiller.navn}.`, "fejl");
-        };
+            dsHtml += `</div>`;
+            adminDsContainer.innerHTML = dsHtml;
 
-        window.gemOgLaasHold = function() {
-            const antalHS = mitHold.filter(s => s.raekke === 'HS').length;
-            const antalDS = mitHold.filter(s => s.raekke === 'DS').length;
-            if (antalHS === 4 && antalDS === 2) {
-                visBesked(`Fantastisk, ${nuvaerendeManager}! Dit hold opfylder alle krav og er låst! 🚀`);
-            } else {
-                visBesked(`Fejl: Holdet SKAL have præcis 4 Herresingler og 2 Damesingler!`, "fejl");
+            document.getElementById('admin-tournament-select').innerHTML = turneringer.map(t => `<option value="${t.id}">${t.navn}</option>`).join('');
+        }
+
+        window.frigivUgensPoint = async function() {
+            const tId = document.getElementById('admin-tournament-select').value;
+            let indsamledeResultater = {};
+            let spillereDerFikPointId = [];
+
+            const hsInputs = document.querySelectorAll('.hs-admin-input');
+            hsInputs.forEach(el => {
+                if(el.value) {
+                    const spillerId = parseInt(el.value);
+                    const rundeNavn = el.getAttribute('data-runde');
+                    const sp = spillere.find(x => x.id === spillerId);
+                    if (sp) {
+                        indsamledeResultater[sp.navn] = { runde: rundeNavn, point: pointModelB[rundeNavn], raekke: "HS" };
+                        spillereDerFikPointId.push({ id: spillerId, runde: rundeNavn });
+                    }
+                }
+            });
+
+            const dsInputs = document.querySelectorAll('.ds-admin-input');
+            dsInputs.forEach(el => {
+                if(el.value) {
+                    const spillerId = parseInt(el.value);
+                    const rundeNavn = el.getAttribute('data-runde');
+                    const sp = spillere.find(x => x.id === spillerId);
+                    if (sp) {
+                        indsamledeResultater[sp.navn] = { runde: rundeNavn, point: pointModelB[rundeNavn], raekke: "DS" };
+                        spillereDerFikPointId.push({ id: spillerId, runde: rundeNavn });
+                    }
+                }
+            });
+
+            if(Object.keys(indsamledeResultater).length === 0) {
+                return alert("Vælg venligst mindst én spiller før du gemmer runden!");
             }
+
+            await set(ref(db, `turnerings_historik/${tId}`), indsamledeResultater);
+
+            managere.forEach(async (m) => {
+                let samletVundetIReset = 0;
+                const trupIdListe = m.hold || [];
+
+                spillereDerFikPointId.forEach(item => {
+                    if(trupIdListe.includes(item.id)) {
+                        samletVundetIReset += pointModelB[item.runde];
+                    }
+                });
+
+                if (samletVundetIReset > 0) {
+                    await update(ref(db, `managere/${m.uid}`), {
+                        point: (m.point || 0) + samletVundetIReset
+                    });
+                }
+            });
+
+            // 🛠️ DET LEGENDARISKE, DYNAMISKE SIKRINGSSYSTEM FOR PRISER UD FRA PRISKLASSER
+            let opdateredePriserStruktur = {};
+            spillere.forEach(s => {
+                let nyPris = s.pris;
+                const spraestation = spillereDerFikPointId.find(x => x.id === s.id);
+                const runde = spraestation ? spraestation.runde : "Intet";
+
+                // KLASSE 1: OVER 20 MILLIONER (Forventning: Semifinale)
+                if (s.pris >= 20000000) {
+                    if (runde === "Winner") nyPris += 2500000;
+                    else if (runde === "Runner-up") nyPris += 1500000;
+                    else if (runde === "Semi-finalist") nyPris += 0; // Holder værdien
+                    else if (runde === "Quarter-finalist") nyPris -= 1000000;
+                    else if (runde === "Round of 16") nyPris -= 2000000;
+                    else nyPris -= 3000000; // Røg ud i R32 eller deltog ikke
+                }
+                // KLASSE 2: 12 TIL 20 MILLIONER (Forventning: Kvartfinale)
+                else if (s.pris >= 12000000 && s.pris < 20000000) {
+                    if (runde === "Winner") nyPris += 3000000;
+                    else if (runde === "Runner-up") nyPris += 2000000;
+                    else if (runde === "Semi-finalist") nyPris += 1000000;
+                    else if (runde === "Quarter-finalist") nyPris += 0; // Holder værdien
+                    else if (runde === "Round of 16") nyPris -= 1000000;
+                    else nyPris -= 1800000; // Røg ud i R32 eller deltog ikke
+                }
+                // KLASSE 3: 6 TIL 12 MILLIONER (Forventning: Round of 16)
+                else if (s.pris >= 6000000 && s.pris < 12000000) {
+                    if (runde === "Winner") nyPris += 3500000;
+                    else if (runde === "Runner-up") nyPris += 2500000;
+                    else if (runde === "Semi-finalist") nyPris += 1500000;
+                    else if (runde === "Quarter-finalist") nyPris += 750000;
+                    else if (runde === "Round of 16") nyPris += 0; // Holder værdien
+                    else nyPris -= 800000; // Røg ud i R32 eller deltog ikke
+                }
+                // KLASSE 4: UNDER 6 MILLIONER (Forventning: Intet pres, holder altid værdi!)
+                else {
+                    if (runde === "Winner") nyPris += 4000000;
+                    else if (runde === "Runner-up") nyPris += 3000000;
+                    else if (runde === "Semi-finalist") nyPris += 2000000;
+                    else if (runde === "Quarter-finalist") nyPris += 1200000;
+                    else if (runde === "Round of 16") nyPris += 600000;
+                    else if (runde === "Round of 32") nyPris += 200000; // Lille stigning for at klare kvalifikation/første runde
+                    else nyPris += 0; // Holder prisen hvis de slet ikke deltog! (Taber ALDRIG værdi)
+                }
+
+                // Sikkerhedsventil: Ingen må falde under 50.000 DKK
+                if (nyPris < 50000) nyPris = 50000;
+                opdateredePriserStruktur[s.id] = nyPris;
+            });
+            
+            await set(ref(db, "dynamiske_spillere"), opdateredePriserStruktur);
+            visBesked("🔥 Ugen er lukket! Det taktiske forventnings-prissystem er opdateret live på hele markedet!");
         };
 
-        // 📊 LIVE HISTORIK-VISNING FRA PYTHON ROBOTTEN
+        window.skiftRaekke = function(r) { aktivRaekke = r; opdaterSkaerm(); };
+        window.haandterKnapKlik = function(id, ejer) { if (ejer) { window.saelgSpiller(id); } else { window.koebSpiller(id); } };
+
+        window.koebSpiller = async function(id) {
+            const spiller = spillere.find(p => p.id === id);
+            const antalIRaekke = mitHold.filter(s => s.raekke === spiller.raekke).length;
+            if (spiller.raekke === 'HS' && antalIRaekke >= 4) return visBesked(`Maks 4 Herresingle!`, "fejl");
+            if (spiller.raekke === 'DS' && antalIRaekke >= 2) return visBesked(`Maks 2 Damesingle!`, "fejl");
+            
+            let nTrupper = mitHold.map(p => p.id); nTrupper.push(id);
+            await update(ref(db, `managere/${nuvaerendeUid}`), { budget: budget - spiller.pris, hold: nTrupper });
+        };
+
+        window.saelgSpiller = async function(id) {
+            const spiller = spillere.find(p => p.id === id);
+            let nTrupper = mitHold.filter(p => p.id !== id).map(p => p.id);
+            await update(ref(db, `managere/${nuvaerendeUid}`), { budget: budget + spiller.pris, hold: nTrupper });
+        };
+
         window.visTurnering = function(id, navn) {
             document.getElementById('modal-titel').innerText = `📊 ${navn}`;
             const wrapper = document.getElementById('modal-body-wrapper');
-            
             const TData = gemteTurneringerLive[id];
             if (!TData) {
-                document.getElementById('modal-subtitel').innerText = "Turneringen spilles i øjeblikket.";
-                wrapper.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">Officielle resultater er klar søndag kl. 22:00, når robot.py har kørt!</div>`;
+                document.getElementById('modal-subtitel').innerText = "Turnering ikke afviklet endnu.";
+                wrapper.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px;">Resultater frigives automatisk her i arkivet så snart administratoren gemmer runden!</div>`;
             } else {
-                document.getElementById('modal-subtitel').innerText = "Officielle runder og point:";
-                
-                const hsList = Object.entries(TData).filter(([_, s]) => s.raekke === 'HS').sort((a,b) => b[1].point - a[1].point);
-                const dsList = Object.entries(TData).filter(([_, s]) => s.raekke === 'DS').sort((a,b) => b[1].point - a[1].point);
-
+                document.getElementById('modal-subtitel').innerText = "Officielle placeringer:";
+                const hs = Object.entries(TData).filter(([_, s]) => s.raekke === 'HS').sort((a,b) => b[1].point - a[1].point);
+                const ds = Object.entries(TData).filter(([_, s]) => s.raekke === 'DS').sort((a,b) => b[1].point - a[1].point);
                 wrapper.innerHTML = `
                     <div class="modal-grid">
-                        <div>
-                            <div class="column-title">Herresingle (HS)</div>
-                            ${hsList.length === 0 ? '<div style="color:var(--text-muted)">Ingen data</div>' : hsList.slice(0, 12).map(([navn, s]) => `<div class="result-item"><span>${navn}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}
-                        </div>
-                        <div>
-                            <div class="column-title">Damesingle (DS)</div>
-                            ${dsList.length === 0 ? '<div style="color:var(--text-muted)">Ingen data</div>' : dsList.slice(0, 12).map(([navn, s]) => `<div class="result-item"><span>${navn}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}
-                        </div>
-                    </div>
-                `;
+                        <div><div class="column-title">Herresingle (HS)</div>${hs.map(([n, s]) => `<div class="result-item"><span>${n}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}</div>
+                        <div><div class="column-title">Damesingle (DS)</div>${ds.map(([n, s]) => `<div class="result-item"><span>${n}</span><span style="color:var(--accent)">${s.runde} (${s.point}p)</span></div>`).join('')}</div>
+                    </div>`;
             }
             document.getElementById('app-modal').style.display = 'flex';
         };
 
         window.spionerManager = function(uid) {
-            const m = managere.find(manager => manager.uid === uid);
-            if (!m) return;
-            document.getElementById('modal-titel').innerText = `👤 ${m.navn}'s Hold`;
-            document.getElementById('modal-subtitel').innerText = `Resterende budget: ${m.budget.toLocaleString('da-DK')} DKK`;
-            const managerHoldSpillere = m.hold ? m.hold.map(sid => spillere.find(p => p.id === sid)).filter(Boolean) : [];
-            const hs = managerHoldSpillere.filter(s => s.raekke === 'HS');
-            const ds = managerHoldSpillere.filter(s => s.raekke === 'DS');
-            const wrapper = document.getElementById('modal-body-wrapper');
-            wrapper.innerHTML = `
-                <div class="modal-grid">
-                    <div>
-                        <div class="column-title">Herresingle (HS)</div>
-                        ${hs.length === 0 ? '<div style="color:var(--text-muted)">Ingen</div>' : hs.map(s => `<div class="result-item"><span>🏸 ${s.navn}</span><span style="color:var(--text-muted)">${s.pris.toLocaleString('da-DK')} DKK</span></div>`).join('')}
-                    </div>
-                    <div>
-                        <div class="column-title">Damesingle (DS)</div>
-                        ${ds.length === 0 ? '<div style="color:var(--text-muted)">Ingen</div>' : ds.map(s => `<div class="result-item"><span>🏸 ${s.navn}</span><span style="color:var(--text-muted)">${s.pris.toLocaleString('da-DK')} DKK</span></div>`).join('')}
-                    </div>
-                </div>
-            `;
+            const m = managere.find(x => x.uid === uid);
+            document.getElementById('modal-titel').innerText = `👤 ${m.navn}`;
+            document.getElementById('modal-subtitel').innerText = "Nuværende spillere på holdet:";
+            const t = m.hold ? m.hold.map(id => spillere.find(p => p.id === id)).filter(Boolean) : [];
+            document.getElementById('modal-body-wrapper').innerHTML = `<div class="modal-grid"><div><div class="column-title">Herresingle</div>${t.filter(s=>s.raekke==='HS').map(s=>`<div class="result-item">${s.navn}</div>`).join('')}</div><div><div class="column-title">Damesingle</div>${t.filter(s=>s.raekke==='DS').map(s=>`<div class="result-item">${s.navn}</div>`).join('')}</div></div>`;
             document.getElementById('app-modal').style.display = 'flex';
         };
 
         window.lukModal = function() { document.getElementById('app-modal').style.display = 'none'; };
 
-        // FIREBASE LIVE SYNKRONISERING
         onValue(ref(db, "managere"), (snapshot) => {
-            managere = [];
-            snapshot.forEach((childSnapshot) => {
-                managere.push(childSnapshot.val());
-            });
+            managere = []; snapshot.forEach(x => { managere.push(x.val()); });
             if (nuvaerendeUid) {
                 const mig = managere.find(m => m.uid === nuvaerendeUid);
-                if (mig) {
-                    budget = mig.budget;
-                    mitHold = mig.hold ? mig.hold.map(id => spillere.find(p => p.id === id)).filter(Boolean) : [];
-                }
+                if (mig) { budget = mig.budget; mitHold = mig.hold ? mig.hold.map(id => spillere.find(p => p.id === id)).filter(Boolean) : []; }
             }
             opdaterSkaerm();
         });
 
-        // Hent live-historik fra databasen
-        onValue(ref(db, "turnerings_historik"), (snapshot) => {
-            if (snapshot.exists()) { gemteTurneringerLive = snapshot.val(); }
-            opdaterSkaerm();
-        });
+        onValue(ref(db, "turnerings_historik"), (snapshot) => { if (snapshot.exists()) { gemteTurneringerLive = snapshot.val(); opdaterSkaerm(); } });
     </script>
 </head>
 <body>
 
-<div id="toast-notification">
-    <span id="toast-icon">🟢</span> <span id="toast-message">Besked her</span>
-</div>
+<div id="toast-notification"><span id="toast-icon">🟢</span> <span id="toast-message"></span></div>
 
 <div id="login-screen">
     <div class="login-box">
-        <h2 style="margin:0;">🏸 Badminton Manager Liga</h2>
-        <p style="color: var(--text-muted); font-size: 0.9em; margin-top:5px; margin-bottom:20px;">Log ind eller opret en manager-konto</p>
-        
-        <input type="text" id="username-input" class="login-input" placeholder="Manager-navn (Kun ved oprettelse)...">
+        <h2>🏸 Badminton Manager Liga</h2>
+        <input type="text" id="username-input" class="login-input" placeholder="Manager-navn...">
         <input type="email" id="email-input" class="login-input" placeholder="E-mail adresse...">
-        <input type="password" id="password-input" class="login-input" placeholder="Password (Mindst 6 tegn)...">
-        
-        <button class="btn" style="background: var(--accent); margin-top: 15px;" onclick="login()">Log ind som eksisterende manager 🔓</button>
-        <button class="btn" style="background: var(--accent-blue); margin-top: 8px;" onclick="opretProfil()">Opret NY manager profil 🚀</button>
+        <input type="password" id="password-input" class="login-input" placeholder="Password...">
+        <button class="btn" style="margin-top:15px;" onclick="login()">Log ind 🔓</button>
+        <button class="btn" style="background:var(--accent-blue); margin-top:8px;" onclick="opretProfil()">Opret profil 🚀</button>
     </div>
 </div>
 
 <div class="dashboard">
     <header>
         <div>
-            <h1 style="margin:0; font-size:1.6em;">Badminton Fantasy Manager</h1>
-            <p style="color: var(--text-muted); margin: 5px 0 0 0;">Manager: <span id="current-user-display" style="color:white; font-weight:bold;">Logget ud</span> • Sæson 2026</p>
+            <h1 style="margin:0; font-size:1.5em;">Badminton Fantasy Manager</h1>
+            <p style="color:var(--text-muted); margin:5px 0 0 0;">
+                Manager: <span id="current-user-display" style="color:white; font-weight:bold;"></span>
+                <button class="logout-btn" onclick="logUd()">Log ud 🚪</button>
+            </p>
         </div>
         <div class="header-info-box">
-            <div class="window-badge" id="window-status-text">Transfervindue: Læser kalender...</div>
-            <div class="budget-badge">Budget: <span id="budget-display">50.000.000</span> DKK</div>
+            <div class="window-badge" id="window-status-text"></div>
+            <div class="budget-badge">Budget: <span id="budget-display"></span> DKK</div>
         </div>
     </header>
 
@@ -705,8 +589,8 @@
         <div class="section">
             <h2>Transfermarkedet</h2>
             <div class="tabs-container">
-                <button class="tab-btn active" id="btn-hs" onclick="skiftRaekke('HS')">Herresingle (HS)</button>
-                <button class="tab-btn" id="btn-ds" onclick="skiftRaekke('DS')">Damesingle (DS)</button>
+                <button class="tab-btn active" id="btn-hs" onclick="skiftRaekke('HS')">Herresingle</button>
+                <button class="tab-btn" id="btn-ds" onclick="skiftRaekke('DS')">Damesingle</button>
             </div>
             <div class="market-grid" id="market-container"></div>
         </div>
@@ -723,25 +607,38 @@
 
         <div class="section">
             <h2>🏸 Mit Hold (<span id="team-count">0</span>/6)</h2>
-            <div style="font-size: 0.85em; color: var(--text-muted); margin-bottom: 10px;">
-                Krav: <span id="req-hs">0</span>/4 HS og <span id="req-ds">0</span>/2 DS
-            </div>
-            <ul id="my-team-container" style="list-style:none; padding:0; margin: 15px 0;"></ul>
-            <button class="btn" style="background: var(--accent-blue);" onclick="gemOgLaasHold()">Gem og Lås Hold! 🔒</button>
+            <div style="font-size:0.85em; color:var(--text-muted); margin-bottom:10px;">Krav: <span id="req-hs">0</span>/4 HS og <span id="req-ds">0</span>/2 DS</div>
+            <ul id="my-team-container" style="list-style:none; padding:0;"></ul>
         </div>
     </div>
 
-    <div class="section" id="tournament-section-box" style="grid-column: 1 / -1;">
-        <h2>📊 Turnerings-arkiv (Sidste 10)</h2>
+    <div class="section" style="grid-column:1 / -1;">
+        <h2>📊 Sæsonens Officielle Turneringer (Kalender & Arkiv)</h2>
         <div class="tournament-history" id="tournament-history-container"></div>
+    </div>
+
+    <div class="section admin-section" id="admin-panel-section">
+        <h2 style="margin:0; color:var(--accent-blue);">🔑 Visuelt Administrator Panel</h2>
+        <p style="color:var(--text-muted); font-size:0.9em; margin-bottom:20px;">Vælg turneringen, udfyld alle relevante pladser fra Round of 32 og frem, og gem runden for hele ligaen.</p>
+        
+        <div style="margin-bottom:15px;">
+            <label style="font-weight:bold; margin-right:10px;">Vælg turnering der skal lukkes:</label>
+            <select id="admin-tournament-select" class="admin-select" style="width:350px;"></select>
+        </div>
+
+        <div class="admin-grid">
+            <div id="admin-hs-inputs"></div>
+            <div id="admin-ds-inputs"></div>
+        </div>
+        <button class="btn" style="margin-top:25px; background:var(--accent); font-size:1.1em; padding:15px;" onclick="frigivUgensPoint()">🚀 Gem Resultater, Beregn Point & Opdater Spillerpriser Live!</button>
     </div>
 </div>
 
 <div class="modal" id="app-modal">
     <div class="modal-content">
         <span class="close-btn" onclick="lukModal()">&times;</span>
-        <h2 id="modal-titel">Titel</h2>
-        <p style="color: var(--text-muted); margin: 5px 0 10px 0;" id="modal-subtitel"></p>
+        <h2 id="modal-titel"></h2>
+        <p style="color:var(--text-muted); margin:5px 0 10px 0;" id="modal-subtitel"></p>
         <div id="modal-body-wrapper"></div>
     </div>
 </div>
